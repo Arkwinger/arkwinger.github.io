@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dom's CTF Playground</title>
+  <style>
+    :root{--bg:#0b1020;--card:#0f1724;--accent:#7c3aed;--muted:#99a1b3;--glass:rgba(255,255,255,0.04)}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#071025);color:#e6eef8;min-height:100vh}
+    .wrap{max-width:980px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px}
+    .logo{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:6px 0 20px}
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:20px}
+    .card{background:linear-gradient(180deg,var(--card),rgba(12,18,30,0.6));padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+    .terminal{height:220px;overflow:auto;padding:12px;font-family:ui-monospace,monospace;background:rgba(0,0,0,0.22);border-radius:8px}
+    .controls{display:flex;gap:8px;margin-top:12px}
+    button{background:var(--glass);border:1px solid rgba(255,255,255,0.04);color:inherit;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .small{font-size:13px;color:var(--muted)}
+    .cards-list{display:grid;grid-template-columns:repeat(1,1fr);gap:10px;margin-top:12px}
+    .writeup{padding:10px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;justify-content:space-between;align-items:center}
+    .badge{background:rgba(255,255,255,0.04);padding:6px 8px;border-radius:999px;font-size:12px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    .big-btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#06b6d4);color:#021122;border:none;font-weight:700}
+    .confetti{position:fixed;pointer-events:none;left:0;top:0;width:100%;height:100%;z-index:999}
+    @media(max-width:880px){.grid{grid-template-columns:1fr;}.logo{width:52px;height:52px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">CTF</div>
+      <div>
+        <h1>CTF Playground — fun webpage for your writeups</h1>
+        <p class="lead">Interactive single-file page: quick terminal mockups, random payload generator, and a writeup gallery you can edit.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Interactive terminal</div>
+              <h2 style="margin:6px 0 0;font-size:16px">Fake terminal — demo commands</h2>
+            </div>
+            <div style="text-align:right">
+              <div class="small">Status: <strong id="status">idle</strong></div>
+            </div>
+          </div>
+
+          <div id="term" class="terminal" aria-live="polite"></div>
+
+          <div class="controls">
+            <button id="run-nmap">Run quick nmap</button>
+            <button id="run-gobuster">Gobuster dir</button>
+            <button id="run-shell">Spawn shell</button>
+            <div style="flex:1"></div>
+            <button id="solve" class="big-btn">Celebrate solve 🎉</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Random goodies</div>
+              <h2 style="margin:6px 0 0;font-size:16px">Payload & wordlist picker</h2>
+            </div>
+            <div class="small">Click to copy</div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+            <select id="wordlist">
+              <option value="/usr/share/wordlists/dirb/common.txt">dirb/common.txt</option>
+              <option value="/usr/share/seclists/Discovery/Web-Content/raft-small-words.txt">raft-small-words.txt</option>
+              <option value="/usr/share/wordlists/dirb/big.txt">dirb/big.txt</option>
+            </select>
+            <button id="copy-wordlist">Copy</button>
+            <button id="gen-payload">Random payload</button>
+          </div>
+
+          <div id="payload" style="margin-top:10px;padding:10px;background:rgba(0,0,0,0.12);border-radius:8px;font-family:ui-monospace,monospace"># payload will appear here</div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Writeup gallery</div>
+              <h3 style="margin:6px 0 0">Pinned / recent</h3>
+            </div>
+            <div class="small">Edit the HTML to change these</div>
+          </div>
+
+          <div class="cards-list" id="writeups">
+            <div class="writeup"><div><strong>creative.thm</strong><div class="small">medium · web</div></div><div class="badge">view</div></div>
+            <div class="writeup"><div><strong>ultratech</strong><div class="small">hard · privesc</div></div><div class="badge">view</div></div>
+            <div class="writeup"><div><strong>gobuster-box</strong><div class="small">easy · recon</div></div><div class="badge">view</div></div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button id="add-writeup">Add card</button>
+            <button id="download-html">Download HTML</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px;text-align:center">
+          <div class="small">Deploy notes</div>
+          <p class="small" style="margin:8px 0">Drop this file as <code>index.html</code> in any repo and enable GitHub Pages (main branch / root). Or push to a <code>gh-pages</code> branch.</p>
+          <button id="deploy">Show deploy steps</button>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Made for shortcuts, demos, and showing off clean writeups. Want a theme change or a different widget?</footer>
+  </div>
+
+  <canvas id="confetti" class="confetti"></canvas>
+
+  <script>
+    // tiny terminal typing
+    const term = document.getElementById('term');
+    const status = document.getElementById('status');
+    function typeLines(lines, cb){
+      let i=0;
+      status.textContent='running';
+      (function next(){
+        if(i>=lines.length){ status.textContent='idle'; if(cb) cb(); return }
+        const line = document.createElement('div');
+        term.appendChild(line);
+        let j=0; const txt=lines[i];
+        const iv=setInterval(()=>{ line.textContent += txt[j++] || ''; term.scrollTop = term.scrollHeight; if(j>txt.length){ clearInterval(iv); i++; setTimeout(next,300) } }, 14)
+      })();
+    }
+
+    document.getElementById('run-nmap').onclick = ()=>{
+      typeLines(['$ nmap -sC -sV -p- creative.thm','PORT   STATE SERVICE VERSION','80/tcp open  http    nginx 1.18','8080/tcp open http    nginx 1.18'])
+    }
+    document.getElementById('run-gobuster').onclick = ()=>{
+      typeLines(['$ gobuster dir -u http://creative.thm -w /usr/share/wordlists/dirb/common.txt -t 50','/uploads (Status: 200)','/admin (Status: 301)'])
+    }
+    document.getElementById('run-shell').onclick = ()=>{
+      typeLines(['$ rlwrap nc -lvnp 9001','Listening on 0.0.0.0 9001','Connection from 10.10.14.5','www-data@creative:~$ id','uid=33(www-data) gid=33(www-data) groups=33(www-data)'])
+    }
+
+    // payload generator / copy
+    const payloads = ["gobuster dir -u http://creative.thm -w /usr/share/wordlists/dirb/common.txt -t 50","cewl -w words.txt http://creative.thm","curl http://creative.thm/js/app.js | grep -oE '\\/api\\/[a-zA-Z0-9_-]+'","python3 -m http.server 8000","sudo /bin/cat /root/root.txt"];
+    document.getElementById('gen-payload').onclick = ()=>{
+      const p = payloads[Math.floor(Math.random()*payloads.length)];
+      document.getElementById('payload').textContent = p;
+    }
+    document.getElementById('copy-wordlist').onclick = ()=>{
+      const w = document.getElementById('wordlist').value;
+      navigator.clipboard.writeText(w).then(()=>{alert('Copied: '+w)})
+    }
+
+    // add writeup card
+    document.getElementById('add-writeup').onclick = ()=>{
+      const name = prompt('Writeup name (short)') || 'new-box';
+      const el = document.createElement('div'); el.className='writeup'; el.innerHTML = `<div><strong>${name}</strong><div class="small">custom · edit me</div></div><div class="badge">view</div>`;
+      document.getElementById('writeups').prepend(el);
+    }
+
+    // download html
+    document.getElementById('download-html').onclick = ()=>{
+      const blob = new Blob([document.documentElement.outerHTML],{type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='index.html'; a.click(); URL.revokeObjectURL(url);
+    }
+
+    // deploy steps
+    document.getElementById('deploy').onclick = ()=>{
+      alert('1) Create a repo named username.github.io or any repo\n2) Commit this file as index.html to the repo root on main branch\n3) Settings → Pages → Source: main/root (or gh-pages) → Save\n4) Visit https://username.github.io')
+    }
+
+    // confetti (simple)
+    function celebrate(){
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = innerWidth; canvas.height = innerHeight; const particles=[];
+      for(let i=0;i<150;i++){ particles.push({x:Math.random()*canvas.width,y:-20+Math.random()*50,vy:2+Math.random()*6,rv:Math.random()*360,size:6+Math.random()*10})}
+      let t=0; const iv=setInterval(()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p=>{p.y+=p.vy; ctx.save(); ctx.fillStyle = `hsl(${p.rv},80%,60%)`; ctx.translate(p.x,p.y); ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size); ctx.restore()});
+        t++; if(t>120){ clearInterval(iv); ctx.clearRect(0,0,canvas.width,canvas.height) }
+      },16)
+    }
+    document.getElementById('solve').onclick = ()=>{ celebrate(); alert('Nice — flag captured!') }
+  </script>
+</body>
+</html>
