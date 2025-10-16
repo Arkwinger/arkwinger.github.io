@@ -1,133 +1,267 @@
-[
-  {"korean":"노력","english":"effort"},
-  {"korean":"관계","english":"relationship"},
-  {"korean":"습관","english":"habit"},
-  {"korean":"설명하다","english":"to explain"},
-  {"korean":"영향","english":"influence, effect"},
-  {"korean":"초대","english":"invitation"},
-  {"korean":"자라다","english":"to grow"},
-  {"korean":"성장","english":"growth"},
-  {"korean":"환경","english":"environment"},
-  {"korean":"기억","english":"memory"},
-  {"korean":"희망","english":"hope"},
-  {"korean":"경험","english":"experience"},
-  {"korean":"성공","english":"success"},
-  {"korean":"실패","english":"failure"},
-  {"korean":"시작","english":"start, beginning"},
-  {"korean":"끝","english":"end"},
-  {"korean":"공부하다","english":"to study"},
-  {"korean":"연습하다","english":"to practice"},
-  {"korean":"반복","english":"repetition"},
-  {"korean":"질문","english":"question"},
-  {"korean":"대답","english":"answer"},
-  {"korean":"친구","english":"friend"},
-  {"korean":"가족","english":"family"},
-  {"korean":"사랑","english":"love"},
-  {"korean":"미안하다","english":"to be sorry"},
-  {"korean":"고맙다","english":"to be grateful / thank you"},
-  {"korean":"부탁하다","english":"to ask a favor"},
-  {"korean":"가능하다","english":"to be possible"},
-  {"korean":"준비하다","english":"to prepare"},
-  {"korean":"생각하다","english":"to think"},
-  {"korean":"알다","english":"to know"},
-  {"korean":"모르다","english":"to not know"},
-  {"korean":"배우다","english":"to learn"},
-  {"korean":"가르치다","english":"to teach"},
-  {"korean":"가다","english":"to go"},
-  {"korean":"오다","english":"to come"},
-  {"korean":"먹다","english":"to eat"},
-  {"korean":"마시다","english":"to drink"},
-  {"korean":"보다","english":"to see/watch"},
-  {"korean":"듣다","english":"to listen/hear"},
-  {"korean":"말하다","english":"to speak"},
-  {"korean":"쓰다","english":"to write/use (a thing)"},
-  {"korean":"읽다","english":"to read"},
-  {"korean":"걷다","english":"to walk"},
-  {"korean":"달리다","english":"to run"},
-  {"korean":"쉬다","english":"to rest"},
-  {"korean":"일하다","english":"to work"},
-  {"korean":"운동","english":"exercise"},
-  {"korean":"건강","english":"health"},
-  {"korean":"음식","english":"food"},
-  {"korean":"맛있다","english":"to be delicious"},
-  {"korean":"배고프다","english":"to be hungry"},
-  {"korean":"배불리다","english":"to be full"},
-  {"korean":"행복","english":"happiness"},
-  {"korean":"슬프다","english":"to be sad"},
-  {"korean":"화나다","english":"to be angry"},
-  {"korean":"걱정","english":"worry"},
-  {"korean":"두려움","english":"fear"},
-  {"korean":"자유","english":"freedom"},
-  {"korean":"평화","english":"peace"},
-  {"korean":"도움","english":"help"},
-  {"korean":"문제","english":"problem"},
-  {"korean":"해결","english":"solution"},
-  {"korean":"정보","english":"information"},
-  {"korean":"데이터","english":"data"},
-  {"korean":"인터넷","english":"internet"},
-  {"korean":"비밀번호","english":"password"},
-  {"korean":"보안","english":"security"},
-  {"korean":"서버","english":"server"},
-  {"korean":"로그","english":"log"},
-  {"korean":"분석","english":"analysis"},
-  {"korean":"증거","english":"evidence"},
-  {"korean":"탐지","english":"detection"},
-  {"korean":"대응","english":"response"},
-  {"korean":"수사","english":"investigation"},
-  {"korean":"파일","english":"file"},
-  {"korean":"백업","english":"backup"},
-  {"korean":"복구","english":"recovery"},
-  {"korean":"권한","english":"permission"},
-  {"korean":"관리자","english":"administrator"},
-  {"korean":"사용자","english":"user"},
-  {"korean":"네트워크","english":"network"},
-  {"korean":"연결","english":"connection"},
-  {"korean":"속도","english":"speed"},
-  {"korean":"지연","english":"latency"},
-  {"korean":"패킷","english":"packet"},
-  {"korean":"포트","english":"port"},
-  {"korean":"암호화","english":"encryption"},
-  {"korean":"인증","english":"authentication"},
-  {"korean":"허가","english":"authorization"},
-  {"korean":"취약점","english":"vulnerability"},
-  {"korean":"공격","english":"attack"},
-  {"korean":"방어","english":"defense"},
-  {"korean":"침입","english":"intrusion"},
-  {"korean":"탐색","english":"reconnaissance"},
-  {"korean":"발견","english":"discovery"},
-  {"korean":"접근","english":"access"},
-  {"korean":"권고","english":"recommendation"},
-  {"korean":"정책","english":"policy"},
-  {"korean":"규칙","english":"rule"},
-  {"korean":"법률","english":"law"},
-  {"korean":"계약","english":"contract"},
-  {"korean":"지식","english":"knowledge"},
-  {"korean":"기술","english":"technology"},
-  {"korean":"도구","english":"tool"},
-  {"korean":"스크립트","english":"script"},
-  {"korean":"프로그램","english":"program"},
-  {"korean":"언어","english":"language"},
-  {"korean":"문서","english":"document"},
-  {"korean":"노트","english":"note"},
-  {"korean":"목표","english":"goal"},
-  {"korean":"계획","english":"plan"},
-  {"korean":"일정","english":"schedule"},
-  {"korean":"우선순위","english":"priority"},
-  {"korean":"성과","english":"result, performance"},
-  {"korean":"비율","english":"ratio"},
-  {"korean":"비용","english":"cost"},
-  {"korean":"예산","english":"budget"},
-  {"korean":"시간","english":"time"},
-  {"korean":"공간","english":"space"},
-  {"korean":"속성","english":"attribute"},
-  {"korean":"상태","english":"status"},
-  {"korean":"버전","english":"version"},
-  {"korean":"업데이트","english":"update"},
-  {"korean":"수정","english":"modify, fix"},
-  {"korean":"삭제","english":"delete"},
-  {"korean":"추가","english":"add"},
-  {"korean":"저장","english":"save"},
-  {"korean":"불러오기","english":"load"},
-  {"korean":"전송","english":"send, transmit"},
-  {"korean":"수신","english":"receive"}
-]
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🧠 Korean Vocab Quiz</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+    background: radial-gradient(circle at top, #0a0a12, #050509 70%);
+    color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(30, 30, 45, 0.75);
+    box-shadow: 0 0 25px rgba(120, 60, 255, 0.3);
+    max-width: 500px;
+  }
+  h1 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #b490ff;
+    text-shadow: 0 0 10px #a060ff;
+  }
+  #korean-word {
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #fff;
+    text-shadow: 0 0 12px #6f5aff;
+  }
+  input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 80%;
+    font-size: 1rem;
+    outline: none;
+    background: #111122;
+    color: #fff;
+    box-shadow: inset 0 0 6px rgba(150,150,255,0.2);
+  }
+  button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(90deg, #8e2de2, #4a00e0);
+    color: #fff;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #6d28d9, #3b82f6);
+  }
+  #feedback {
+    margin-top: 15px;
+    font-size: 1.2rem;
+  }
+  .correct { color: #22c55e; text-shadow: 0 0 10px #22c55e; }
+  .incorrect { color: #ef4444; text-shadow: 0 0 10px #ef4444; }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+  <h1>🧠 Korean Vocabulary Quiz</h1>
+  <div id="korean-word">로딩 중...</div>
+  <input type="text" id="answer" placeholder="Type the English meaning..." />
+  <div>
+    <button id="check-btn">Check Answer</button>
+    <button id="next-btn">Next Word</button>
+  </div>
+  <div id="feedback"></div>
+</div>
+
+<script>
+const vocab = [
+  {korean:"노력",english:"effort"},
+  {korean:"관계",english:"relationship"},
+  {korean:"습관",english:"habit"},
+  {korean:"설명하다",english:"to explain"},
+  {korean:"영향",english:"influence"},
+  {korean:"초대",english:"invitation"},
+  {korean:"자라다",english:"to grow"},
+  {korean:"성장",english:"growth"},
+  {korean:"환경",english:"environment"},
+  {korean:"기억",english:"memory"},
+  {korean:"희망",english:"hope"},
+  {korean:"경험",english:"experience"},
+  {korean:"성공",english:"success"},
+  {korean:"실패",english:"failure"},
+  {korean:"시작",english:"start"},
+  {korean:"끝",english:"end"},
+  {korean:"공부하다",english:"to study"},
+  {korean:"연습하다",english:"to practice"},
+  {korean:"질문",english:"question"},
+  {korean:"대답",english:"answer"},
+  {korean:"친구",english:"friend"},
+  {korean:"가족",english:"family"},
+  {korean:"사랑",english:"love"},
+  {korean:"감정",english:"emotion"},
+  {korean:"건강",english:"health"},
+  {korean:"행복",english:"happiness"},
+  {korean:"슬프다",english:"to be sad"},
+  {korean:"화나다",english:"to be angry"},
+  {korean:"걱정",english:"worry"},
+  {korean:"도움",english:"help"},
+  {korean:"문제",english:"problem"},
+  {korean:"해결",english:"solution"},
+  {korean:"정보",english:"information"},
+  {korean:"데이터",english:"data"},
+  {korean:"인터넷",english:"internet"},
+  {korean:"비밀번호",english:"password"},
+  {korean:"보안",english:"security"},
+  {korean:"서버",english:"server"},
+  {korean:"분석",english:"analysis"},
+  {korean:"탐지",english:"detection"},
+  {korean:"대응",english:"response"},
+  {korean:"수사",english:"investigation"},
+  {korean:"파일",english:"file"},
+  {korean:"백업",english:"backup"},
+  {korean:"복구",english:"recovery"},
+  {korean:"권한",english:"permission"},
+  {korean:"사용자",english:"user"},
+  {korean:"네트워크",english:"network"},
+  {korean:"연결",english:"connection"},
+  {korean:"포트",english:"port"},
+  {korean:"암호화",english:"encryption"},
+  {korean:"공격",english:"attack"},
+  {korean:"방어",english:"defense"},
+  {korean:"탐색",english:"reconnaissance"},
+  {korean:"발견",english:"discovery"},
+  {korean:"접근",english:"access"},
+  {korean:"정책",english:"policy"},
+  {korean:"규칙",english:"rule"},
+  {korean:"법률",english:"law"},
+  {korean:"지식",english:"knowledge"},
+  {korean:"기술",english:"technology"},
+  {korean:"도구",english:"tool"},
+  {korean:"언어",english:"language"},
+  {korean:"문서",english:"document"},
+  {korean:"목표",english:"goal"},
+  {korean:"계획",english:"plan"},
+  {korean:"시간",english:"time"},
+  {korean:"공간",english:"space"},
+  {korean:"저장",english:"save"},
+  {korean:"삭제",english:"delete"},
+  {korean:"추가",english:"add"},
+  {korean:"전송",english:"send"},
+  {korean:"수신",english:"receive"},
+  {korean:"공격자",english:"attacker"},
+  {korean:"방화벽",english:"firewall"},
+  {korean:"검증",english:"verification"},
+  {korean:"취약점",english:"vulnerability"},
+  {korean:"이해하다",english:"to understand"},
+  {korean:"기억하다",english:"to remember"},
+  {korean:"잊다",english:"to forget"},
+  {korean:"바꾸다",english:"to change"},
+  {korean:"도착하다",english:"to arrive"},
+  {korean:"떠나다",english:"to leave"},
+  {korean:"보다",english:"to see"},
+  {korean:"듣다",english:"to listen"},
+  {korean:"말하다",english:"to speak"},
+  {korean:"읽다",english:"to read"},
+  {korean:"쓰다",english:"to write"},
+  {korean:"쉬다",english:"to rest"},
+  {korean:"일하다",english:"to work"},
+  {korean:"운동하다",english:"to exercise"},
+  {korean:"걷다",english:"to walk"},
+  {korean:"달리다",english:"to run"},
+  {korean:"먹다",english:"to eat"},
+  {korean:"마시다",english:"to drink"}
+];
+
+let currentWord = null;
+const wordDisplay = document.getElementById('korean-word');
+const answerInput = document.getElementById('answer');
+const feedback = document.getElementById('feedback');
+const checkBtn = document.getElementById('check-btn');
+const nextBtn = document.getElementById('next-btn');
+
+function nextWord() {
+  feedback.textContent = '';
+  answerInput.value = '';
+  currentWord = vocab[Math.floor(Math.random() * vocab.length)];
+  wordDisplay.textContent = currentWord.korean;
+  answerInput.focus();
+}
+
+checkBtn.addEventListener('click', () => {
+  const guess = answerInput.value.trim().toLowerCase();
+  if (!guess) return;
+  if (guess === currentWord.english.toLowerCase()) {
+    feedback.textContent = '정답이에요! ✅';
+    feedback.className = 'correct';
+  } else {
+    feedback.textContent = `틀렸어요 ❌ (${currentWord.english})`;
+    feedback.className = 'incorrect';
+  }
+});
+nextBtn.addEventListener('click', nextWord);
+answerInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') checkBtn.click();
+});
+
+nextWord();
+
+// starry background animation
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resize() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  stars = Array(200).fill().map(() => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    z: Math.random() * canvas.width
+  }));
+}
+window.addEventListener('resize', resize);
+function draw() {
+  ctx.fillStyle = '#050509';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  for (let s of stars) {
+    s.z -= 2;
+    if (s.z <= 0) s.z = canvas.width;
+    const k = 128 / s.z;
+    const px = s.x * k + canvas.width / 2;
+    const py = s.y * k + canvas.height / 2;
+    if (px < 0 || px >= canvas.width || py < 0 || py >= canvas.height) continue;
+    const size = (1 - s.z / canvas.width) * 2;
+    ctx.fillStyle = `rgba(150,120,255,${1 - s.z / canvas.width})`;
+    ctx.fillRect(px, py, size, size);
+  }
+  requestAnimationFrame(draw);
+}
+resize();
+draw();
+</script>
+
+</body>
+</html>
