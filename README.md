@@ -10,7 +10,7 @@ Shows a random Korean word → type the English meaning.
 ### 💻 CTF Playground
 Interactive page for quick security demos and writeups.  
 Simulated terminal commands, payload generator, and a writeup list.  
-[arkwinger.github.io](https://arkwinger.github.io)
+[arkwinger.github.io/playground.html](https://arkwinger.github.ioplayground.html)
 
 ---
 
