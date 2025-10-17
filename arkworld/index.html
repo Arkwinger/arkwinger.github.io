@@ -3,134 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <title>Arkwinger Access Terminal</title>
-  <link rel="stylesheet" href="style.css">
   <style>
-    /* Add subtle gradient background */
-    body.terminal {
-      background: radial-gradient(circle at 20% 20%, #020202 0%, #000000 70%);
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: #000;
       color: #00ff88;
-      font-family: "Courier New", monospace;
+      font-family: 'Courier New', monospace;
       overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      justify-content: left;
+      padding: 40px;
+      flex-direction: column;
     }
 
-    .terminal-container {
-      width: 80%;
-      max-width: 600px;
-      text-align: left;
-      line-height: 1.6;
-      padding: 20px;
-      border: 2px solid #00ff88;
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.5);
-      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
-      animation: flicker 2s infinite;
+    #terminal {
+      width: 100%;
+      height: 100%;
+      white-space: pre-wrap;
+      line-height: 1.4;
+      overflow-y: auto;
+      user-select: none;
     }
 
-    @keyframes flicker {
-      0%, 18%, 22%, 25%, 53%, 57%, 100% {
-        opacity: 1;
-      }
-      20%, 24%, 55% {
-        opacity: 0.9;
-      }
-    }
-
-    #typewriter {
-      white-space: pre-line;
-      margin-bottom: 15px;
-    }
-
-    input {
-      background: transparent;
-      color: #00ff88;
-      border: none;
-      border-bottom: 1px solid #00ff88;
-      width: 250px;
-      font-size: 1.1rem;
-      outline: none;
-      caret-color: #00ff88;
-    }
-
-    #msg {
-      margin-top: 10px;
-      font-weight: bold;
+    .line {
+      display: block;
     }
 
     .cursor {
       display: inline-block;
-      width: 8px;
-      height: 20px;
+      width: 10px;
       background-color: #00ff88;
-      animation: blink 1s steps(2, start) infinite;
-      margin-left: 5px;
+      animation: blink 0.9s infinite;
+      margin-left: 2px;
     }
 
     @keyframes blink {
-      to {
-        visibility: hidden;
-      }
+      0%, 50% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #00ff88;
+      font-family: inherit;
+      font-size: 1rem;
+      width: 300px;
+    }
+
+    #input-line {
+      display: flex;
+      align-items: center;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.2s ease;
+      z-index: 999;
     }
   </style>
 </head>
-<body class="terminal">
-  <div class="terminal-container">
-    <h1 id="typewriter"></h1>
-    <div id="input-area">
-      <p>Enter access key:</p>
-      <input type="password" id="pwd" placeholder=">_" onkeydown="checkKey(event)">
-      <p id="msg"></p>
+<body>
+  <div id="terminal">
+    <div class="line">Initializing Arkwinger Secure Access Terminal...</div>
+    <div class="line">Boot sequence complete.</div>
+    <div class="line">User: guest</div>
+    <div class="line">System: Quantum Node v3.4</div>
+    <div class="line">-----------------------------</div>
+    <div class="line">Enter password to access Arkwinger’s World:</div>
+    <div id="input-line">
+      <span>&gt; </span><input type="password" id="input" autofocus>
+      <span class="cursor" id="cursor"></span>
     </div>
   </div>
 
+  <div id="overlay"></div>
+
   <script>
-    const lines = [
-      "Initializing Arkwinger system...",
-      "Decrypting access modules...",
-      "Welcome, Commander.",
-      "Access key required to enter Arkwinger’s World."
-    ];
+    const input = document.getElementById("input");
+    const terminal = document.getElementById("terminal");
+    const overlay = document.getElementById("overlay");
 
-    let index = 0;
-    const typewriter = document.getElementById("typewriter");
-
-    function typeLine() {
-      if (index < lines.length) {
-        let line = lines[index];
-        let i = 0;
-        let interval = setInterval(() => {
-          typewriter.textContent = line.slice(0, i++);
-          if (i > line.length) {
-            clearInterval(interval);
-            typewriter.textContent += "\n";
-            index++;
-            setTimeout(typeLine, 400);
-          }
-        }, 35);
-      } else {
-        const cursor = document.createElement("span");
-        cursor.className = "cursor";
-        typewriter.appendChild(cursor);
-      }
+    function appendLine(text) {
+      const line = document.createElement("div");
+      line.classList.add("line");
+      line.textContent = text;
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
     }
 
-    function checkKey(e) {
+    input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        const input = document.getElementById("pwd").value.trim();
-        const msg = document.getElementById("msg");
-        if (input.toLowerCase() === "shiro") {
-          msg.textContent = "ACCESS GRANTED...";
-          msg.style.color = "#00ff88";
+        const val = input.value.trim().toLowerCase();
+        appendLine("> " + "*".repeat(val.length));
+        input.value = "";
+
+        if (val === "shiro") {
+          appendLine("Access granted. Redirecting...");
           setTimeout(() => {
-            window.location.href = "home.html";
-          }, 1200);
+            overlay.style.opacity = "1";
+            setTimeout(() => {
+              window.location.href = "arkworld/home.html";
+            }, 1200);
+          }, 1000);
         } else {
-          msg.textContent = "ACCESS DENIED.";
-          msg.style.color = "red";
+          appendLine("Access denied. Try again.");
         }
       }
-    }
+    });
 
-    window.onload = typeLine;
+    // cursor blink fix for mobile
+    input.addEventListener("blur", () => document.getElementById("cursor").style.display = "none");
+    input.addEventListener("focus", () => document.getElementById("cursor").style.display = "inline-block");
   </script>
 </body>
 </html>
