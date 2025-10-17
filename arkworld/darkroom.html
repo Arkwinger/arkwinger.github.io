@@ -53,7 +53,7 @@
       opacity: 1;
     }
 
-    /* flash when she kicks you out */
+    /* flash effect */
     .flash {
       position: fixed;
       top: 0; left: 0;
@@ -70,10 +70,14 @@
   <div class="text" id="dialogue"></div>
   <div class="flash" id="flash"></div>
 
+  <!-- whoosh sound -->
+  <audio id="whoosh" src="whoosh.mp3" preload="auto"></audio>
+
   <script>
     const shiro = document.getElementById("shiro");
     const text = document.getElementById("dialogue");
     const flash = document.getElementById("flash");
+    const whoosh = document.getElementById("whoosh");
     let clicks = 0;
 
     shiro.addEventListener("click", () => {
@@ -83,19 +87,22 @@
         text.classList.add("show");
       } else if (clicks === 2) {
         text.textContent = "시로: 널 내보낼 거야.";
-
-        // teleport-out flash
         setTimeout(() => {
-          flash.style.transition = "opacity 0.3s";
+          // play sound
+          whoosh.volume = 0.6;
+          whoosh.play();
+
+          // flash effect
+          flash.style.transition = "opacity 0.15s";
           flash.style.opacity = "1";
           setTimeout(() => {
-            flash.style.transition = "opacity 1.5s";
+            flash.style.transition = "opacity 1.2s";
             flash.style.opacity = "0";
             setTimeout(() => {
-              window.location.href = "home.html"; // or index.html
-            }, 1200);
-          }, 400);
-        }, 800);
+              window.location.href = "home.html";
+            }, 1000);
+          }, 250);
+        }, 700);
       }
     });
   </script>
