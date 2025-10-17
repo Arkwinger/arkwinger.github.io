@@ -32,7 +32,7 @@
       z-index: 0;
     }
 
-    /* Shiro */
+    /* 🩵 Shiro floating center */
     .character {
       position: absolute;
       top: 45%;
@@ -42,7 +42,7 @@
       animation: float 6s ease-in-out infinite;
       z-index: 2;
       cursor: pointer;
-      filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
     }
 
     @keyframes float {
@@ -52,7 +52,7 @@
 
     .message {
       position: absolute;
-      top: 15%;
+      top: 12%;
       text-align: center;
       z-index: 2;
       font-size: 1.6rem;
@@ -67,7 +67,7 @@
 
     #floating-text {
       position: absolute;
-      bottom: 20%;
+      bottom: 18%;
       text-align: center;
       font-size: 1.2rem;
       opacity: 0.9;
@@ -75,11 +75,10 @@
       color: #ffd6f6;
     }
 
-    /* Floating orbs */
+    /* ✨ Dream Orbs */
     .orb {
       position: absolute;
-      width: 8px;
-      height: 8px;
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: rgba(255,182,193,0.7);
       animation: drift 20s linear infinite;
@@ -89,16 +88,45 @@
       0% { transform: translateY(0) translateX(0); opacity: 0.7; }
       100% { transform: translateY(-110vh) translateX(30vw); opacity: 0; }
     }
+
+    /* 💬 Shiro’s speech bubble */
+    .bubble {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 300px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 182, 193, 0.6);
+      border-radius: 20px;
+      padding: 12px 18px;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 5px #ffb6c1;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+      backdrop-filter: blur(8px);
+      z-index: 3;
+    }
+
+    .bubble.show {
+      opacity: 1;
+    }
+
   </style>
 </head>
 <body class="arkworld">
   <div class="overlay"></div>
   <div class="message">🌸 아크윙거의 세계에 오신 걸 환영합니다 🌙</div>
+
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
+  <div class="bubble" id="bubble"></div>
   <p id="floating-text"></p>
 
   <script>
-    // 🌸 Ambient floating orbs
+    // ✨ Floating Orbs
     for (let i = 0; i < 15; i++) {
       const orb = document.createElement("div");
       orb.className = "orb";
@@ -109,7 +137,7 @@
       document.body.appendChild(orb);
     }
 
-    // 🌙 Dream quotes
+    // 🌙 Dream Quotes
     const thoughts = [
       "오늘은 하늘이 유난히 조용하네.",
       "이 바람, 기분 좋지 않아?",
@@ -121,15 +149,13 @@
     ];
 
     const floatText = document.getElementById("floating-text");
-
     function showThought() {
       floatText.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
     }
-
     window.onload = showThought;
     document.body.addEventListener("click", showThought);
 
-    // 🌸 Shiro random dialogue (different each click)
+    // 💬 Shiro dialogue bubble
     const shiroLines = [
       "시로: 오늘은 네가 웃었으면 좋겠어.",
       "시로: 꿈속에서도 널 기다렸어.",
@@ -140,13 +166,17 @@
       "시로: 그거 알아? 네 목소리, 나한테는 음악 같아."
     ];
 
-    let shiroIndex = 0;
-    document.getElementById("shiro").addEventListener("click", () => {
-      alert(shiroLines[shiroIndex]);
-      shiroIndex = (shiroIndex + 1) % shiroLines.length;
+    const shiro = document.getElementById("shiro");
+    const bubble = document.getElementById("bubble");
+    let index = 0;
+    shiro.addEventListener("click", () => {
+      bubble.textContent = shiroLines[index];
+      bubble.classList.add("show");
+      setTimeout(() => bubble.classList.remove("show"), 4000);
+      index = (index + 1) % shiroLines.length;
     });
 
-    // 🌌 Start music when user first clicks
+    // 🎵 Music (muted to avoid ads)
     document.body.addEventListener("click", () => {
       if (!window.musicStarted) {
         const iframe = document.createElement("iframe");
