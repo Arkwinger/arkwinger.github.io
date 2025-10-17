@@ -39,7 +39,7 @@ input {
 
 /* ANIME WORLD PAGE */
 .arkworld {
-  background: url('bg.jpg') center/cover no-repeat;
+  background: url('bp.jpg') center/cover no-repeat;
   height: 100vh;
   color: white;
   display: flex;
