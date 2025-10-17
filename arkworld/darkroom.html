@@ -23,15 +23,20 @@
       to { opacity: 1; }
     }
 
+    /* make sure the image loads and is bright enough */
     .character {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 240px;
-      filter: brightness(0.5) drop-shadow(0 0 12px rgba(255,255,255,0.15));
+      width: 260px;
       opacity: 0;
-      animation: appear 6s forwards 2s;
+      animation: appear 4s forwards 2s;
+      filter: brightness(0.9) drop-shadow(0 0 35px rgba(255,255,255,0.3));
+    }
+
+    @keyframes appear {
+      to { opacity: 1; }
     }
 
     .text {
@@ -39,13 +44,9 @@
       bottom: 12%;
       text-align: center;
       opacity: 0;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       text-shadow: 0 0 15px rgba(255,255,255,0.3);
-      animation: appearText 6s forwards 3.5s;
-    }
-
-    @keyframes appear {
-      to { opacity: 1; filter: brightness(0.7) drop-shadow(0 0 25px rgba(255,255,255,0.2)); }
+      animation: appearText 5s forwards 4.5s;
     }
 
     @keyframes appearText {
@@ -54,15 +55,16 @@
   </style>
 </head>
 <body>
+  <!-- ✅ fixed image path — assumes darkroom.html is in /arkworld -->
   <img src="shiro.png" class="character" alt="Shiro">
   <div class="text">시로: ...이제 나가.</div>
 
   <script>
-    // optional fade-out after a few seconds
+    // fade out slowly after her line shows
     setTimeout(() => {
-      document.body.style.transition = "opacity 2s";
+      document.body.style.transition = "opacity 3s";
       document.body.style.opacity = "0";
-    }, 10000);
+    }, 12000);
   </script>
 </body>
 </html>
