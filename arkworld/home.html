@@ -89,7 +89,7 @@
       100% { transform: translateY(-110vh) translateX(30vw); opacity: 0; }
     }
 
-    /* 💬 Shiro’s speech bubble */
+    /* 💬 Speech bubble */
     .bubble {
       position: absolute;
       top: 30%;
@@ -115,6 +115,37 @@
       opacity: 1;
     }
 
+    /* 🎧 Music button */
+    #music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 25px;
+      background: rgba(255, 182, 193, 0.2);
+      border: 2px solid #ffb6c1;
+      color: #fff;
+      font-size: 1.4rem;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px #ffb6c1;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 5;
+      backdrop-filter: blur(5px);
+    }
+
+    #music-btn.playing {
+      background: #ffb6c1;
+      color: #000;
+      box-shadow: 0 0 20px #ffb6c1;
+    }
+
+    #music-btn:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body class="arkworld">
@@ -124,6 +155,8 @@
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="bubble" id="bubble"></div>
   <p id="floating-text"></p>
+
+  <button id="music-btn">🎧</button>
 
   <script>
     // ✨ Floating Orbs
@@ -137,7 +170,7 @@
       document.body.appendChild(orb);
     }
 
-    // 🌙 Dream Quotes
+    // 🌙 Dream quotes
     const thoughts = [
       "오늘은 하늘이 유난히 조용하네.",
       "이 바람, 기분 좋지 않아?",
@@ -169,6 +202,7 @@
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
     let index = 0;
+
     shiro.addEventListener("click", () => {
       bubble.textContent = shiroLines[index];
       bubble.classList.add("show");
@@ -176,20 +210,29 @@
       index = (index + 1) % shiroLines.length;
     });
 
-    // 🎵 Music (muted to avoid ads)
-    document.body.addEventListener("click", () => {
-      if (!window.musicStarted) {
-        const iframe = document.createElement("iframe");
-        iframe.width = 0;
-        iframe.height = 0;
-        iframe.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw&mute=1";
-        iframe.allow = "autoplay";
-        iframe.style.position = "absolute";
-        iframe.style.left = "-9999px";
-        document.body.appendChild(iframe);
-        window.musicStarted = true;
+    // 🎧 Music toggle button
+    const musicBtn = document.getElementById("music-btn");
+    let musicFrame = null;
+    let playing = false;
+
+    musicBtn.addEventListener("click", () => {
+      if (!playing) {
+        musicFrame = document.createElement("iframe");
+        musicFrame.width = 0;
+        musicFrame.height = 0;
+        musicFrame.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw&mute=0";
+        musicFrame.allow = "autoplay";
+        musicFrame.style.position = "absolute";
+        musicFrame.style.left = "-9999px";
+        document.body.appendChild(musicFrame);
+        musicBtn.classList.add("playing");
+        playing = true;
+      } else {
+        if (musicFrame) musicFrame.remove();
+        musicBtn.classList.remove("playing");
+        playing = false;
       }
-    }, { once: true });
+    });
   </script>
 </body>
 </html>
