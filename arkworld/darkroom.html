@@ -30,8 +30,8 @@
       transform: translate(-50%, -50%);
       width: 240px;
       opacity: 0;
-      filter: brightness(0.5) drop-shadow(0 0 15px rgba(255,255,255,0.15));
-      animation: appear 5s forwards 1s;
+      filter: brightness(0.6) drop-shadow(0 0 20px rgba(255,255,255,0.25));
+      animation: appear 4s forwards 1s;
       cursor: pointer;
     }
 
@@ -52,15 +52,28 @@
     .text.show {
       opacity: 1;
     }
+
+    /* flash when she kicks you out */
+    .flash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="text" id="dialogue"></div>
+  <div class="flash" id="flash"></div>
 
   <script>
     const shiro = document.getElementById("shiro");
     const text = document.getElementById("dialogue");
+    const flash = document.getElementById("flash");
     let clicks = 0;
 
     shiro.addEventListener("click", () => {
@@ -70,13 +83,19 @@
         text.classList.add("show");
       } else if (clicks === 2) {
         text.textContent = "시로: 널 내보낼 거야.";
+
+        // teleport-out flash
         setTimeout(() => {
-          document.body.style.transition = "opacity 3s ease";
-          document.body.style.opacity = "0";
+          flash.style.transition = "opacity 0.3s";
+          flash.style.opacity = "1";
           setTimeout(() => {
-            window.location.href = "home.html"; // or index.html
-          }, 3000);
-        }, 1000);
+            flash.style.transition = "opacity 1.5s";
+            flash.style.opacity = "0";
+            setTimeout(() => {
+              window.location.href = "home.html"; // or index.html
+            }, 1200);
+          }, 400);
+        }, 800);
       }
     });
   </script>
