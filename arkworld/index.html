@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Arkwinger Access Terminal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="terminal">
+  <div class="terminal-container">
+    <h1 id="typewriter"></h1>
+    <div id="input-area">
+      <p>Enter password:</p>
+      <input type="password" id="pwd" placeholder=">_" onkeydown="checkKey(event)">
+      <p id="msg"></p>
+    </div>
+  </div>
+
+  <script>
+    const lines = [
+      "Initializing quantum link...",
+      "Decrypting credentials...",
+      "Welcome, Arkwinger.",
+      "Access key required to enter the inner world."
+    ];
+
+    let index = 0;
+    const typewriter = document.getElementById("typewriter");
+    function typeLine() {
+      if (index < lines.length) {
+        let line = lines[index];
+        let i = 0;
+        let interval = setInterval(() => {
+          typewriter.textContent = line.slice(0, i++);
+          if (i > line.length) {
+            clearInterval(interval);
+            setTimeout(() => {
+              typewriter.textContent += "\n";
+              index++;
+              typeLine();
+            }, 600);
+          }
+        }, 40);
+      }
+    }
+    typeLine();
+
+    function checkKey(e) {
+      if (e.key === "Enter") {
+        const input = document.getElementById("pwd").value.trim();
+        const msg = document.getElementById("msg");
+        if (input.toLowerCase() === "arkwing") {
+          msg.textContent = "ACCESS GRANTED...";
+          msg.style.color = "#00ff7f";
+          setTimeout(() => {
+            window.location.href = "home.html";
+          }, 1000);
+        } else {
+          msg.textContent = "ACCESS DENIED.";
+          msg.style.color = "red";
+        }
+      }
+    }
+  </script>
+</body>
+</html>
 
