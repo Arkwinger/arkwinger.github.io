@@ -33,27 +33,40 @@
       filter: brightness(0.6) drop-shadow(0 0 20px rgba(255,255,255,0.25));
       animation: appear 4s forwards 1s;
       cursor: pointer;
+      z-index: 2;
     }
 
     @keyframes appear {
       to { opacity: 1; }
     }
 
-    .text {
+    /* 💬 Shiro-style speech bubble */
+    .bubble {
       position: absolute;
-      bottom: 12%;
+      top: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 300px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 182, 193, 0.6);
+      border-radius: 20px;
+      padding: 12px 18px;
+      font-size: 1.1rem;
       text-align: center;
+      color: #fff;
+      text-shadow: 0 0 5px #ffb6c1;
       opacity: 0;
-      font-size: 1.4rem;
-      text-shadow: 0 0 15px rgba(255,255,255,0.3);
-      transition: opacity 1s ease;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+      backdrop-filter: blur(8px);
+      z-index: 3;
     }
 
-    .text.show {
+    .bubble.show {
       opacity: 1;
     }
 
-    /* flash effect */
+    /* ⚡ flash teleport */
     .flash {
       position: fixed;
       top: 0; left: 0;
@@ -67,7 +80,7 @@
 </head>
 <body>
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-  <div class="text" id="dialogue"></div>
+  <div class="bubble" id="bubble"></div>
   <div class="flash" id="flash"></div>
 
   <!-- whoosh sound -->
@@ -75,24 +88,28 @@
 
   <script>
     const shiro = document.getElementById("shiro");
-    const text = document.getElementById("dialogue");
+    const bubble = document.getElementById("bubble");
     const flash = document.getElementById("flash");
     const whoosh = document.getElementById("whoosh");
     let clicks = 0;
 
     shiro.addEventListener("click", () => {
       clicks++;
+
       if (clicks === 1) {
-        text.textContent = "시로: ...이제 나가.";
-        text.classList.add("show");
-      } else if (clicks === 2) {
-        text.textContent = "시로: 널 내보낼 거야.";
+        bubble.textContent = "시로: ...이제 나가.";
+        bubble.classList.add("show");
+        setTimeout(() => bubble.classList.remove("show"), 4000);
+      } 
+      else if (clicks === 2) {
+        bubble.textContent = "시로: 널 내보낼 거야.";
+        bubble.classList.add("show");
+
         setTimeout(() => {
-          // play sound
           whoosh.volume = 0.6;
           whoosh.play();
 
-          // flash effect
+          // flash + teleport
           flash.style.transition = "opacity 0.15s";
           flash.style.opacity = "1";
           setTimeout(() => {
@@ -102,7 +119,7 @@
               window.location.href = "home.html";
             }, 1000);
           }, 250);
-        }, 700);
+        }, 800);
       }
     });
   </script>
