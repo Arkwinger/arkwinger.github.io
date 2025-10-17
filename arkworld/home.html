@@ -7,17 +7,60 @@
 </head>
 <body class="arkworld">
   <div class="overlay"></div>
-  <div class="content">
-    <h1>🌙 Arkwinger’s World 🌸</h1>
+
+  <div class="content fade-in">
+    <h1>🌸 Arkwinger’s World 🌙</h1>
     <p>여기는 나만의 해피 플레이스야.</p>
     <p>편하게 쉬어가도 돼.</p>
+
+    <div class="gallery">
+      <img src="shiro.png" alt="Shiro" class="character">
+      <img src="skyline.png" alt="Seoul skyline" class="background-art">
+    </div>
+
     <div class="buttons">
-      <a href="../index.html">Back to Main Site</a>
+      <a href="../index.html">Main Terminal</a>
       <a href="#">Memories</a>
       <a href="#">Dream Logs</a>
     </div>
   </div>
+
   <audio src="bgm.mp3" autoplay loop></audio>
 </body>
+2️⃣ Add animation + glow to your CSS
+Append this to your style.css:
+
+css
+Copy code
+.fade-in {
+  animation: fadeIn 2s ease-in;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.character {
+  width: 220px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.6));
+  margin: 20px;
+  animation: float 5s ease-in-out infinite;
+}
+
+.background-art {
+  width: 500px;
+  opacity: 0.7;
+  animation: slowfade 12s infinite alternate;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slowfade {
+  0% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
 </html>
 
