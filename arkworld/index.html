@@ -4,12 +4,79 @@
   <meta charset="UTF-8">
   <title>Arkwinger Access Terminal</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Add subtle gradient background */
+    body.terminal {
+      background: radial-gradient(circle at 20% 20%, #020202 0%, #000000 70%);
+      color: #00ff88;
+      font-family: "Courier New", monospace;
+      overflow: hidden;
+    }
+
+    .terminal-container {
+      width: 80%;
+      max-width: 600px;
+      text-align: left;
+      line-height: 1.6;
+      padding: 20px;
+      border: 2px solid #00ff88;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+      animation: flicker 2s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.9;
+      }
+    }
+
+    #typewriter {
+      white-space: pre-line;
+      margin-bottom: 15px;
+    }
+
+    input {
+      background: transparent;
+      color: #00ff88;
+      border: none;
+      border-bottom: 1px solid #00ff88;
+      width: 250px;
+      font-size: 1.1rem;
+      outline: none;
+      caret-color: #00ff88;
+    }
+
+    #msg {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 20px;
+      background-color: #00ff88;
+      animation: blink 1s steps(2, start) infinite;
+      margin-left: 5px;
+    }
+
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+  </style>
 </head>
 <body class="terminal">
   <div class="terminal-container">
     <h1 id="typewriter"></h1>
     <div id="input-area">
-      <p>Enter password:</p>
+      <p>Enter access key:</p>
       <input type="password" id="pwd" placeholder=">_" onkeydown="checkKey(event)">
       <p id="msg"></p>
     </div>
@@ -17,10 +84,10 @@
 
   <script>
     const lines = [
-      "Initializing quantum link...",
-      "Decrypting credentials...",
-      "Welcome, Arkwinger.",
-      "Access key required to enter the inner world."
+      "Initializing Arkwinger system...",
+      "Decrypting access modules...",
+      "Welcome, Commander.",
+      "Access key required to enter Arkwinger’s World."
     ];
 
     let index = 0;
@@ -34,13 +101,15 @@
           typewriter.textContent = line.slice(0, i++);
           if (i > line.length) {
             clearInterval(interval);
-            setTimeout(() => {
-              typewriter.textContent += "\n";
-              index++;
-              typeLine();
-            }, 600);
+            typewriter.textContent += "\n";
+            index++;
+            setTimeout(typeLine, 400);
           }
-        }, 40);
+        }, 35);
+      } else {
+        const cursor = document.createElement("span");
+        cursor.className = "cursor";
+        typewriter.appendChild(cursor);
       }
     }
 
@@ -48,12 +117,12 @@
       if (e.key === "Enter") {
         const input = document.getElementById("pwd").value.trim();
         const msg = document.getElementById("msg");
-        if (input.toLowerCase() === "arkwing") {
+        if (input.toLowerCase() === "shiro") {
           msg.textContent = "ACCESS GRANTED...";
-          msg.style.color = "#00ff7f";
+          msg.style.color = "#00ff88";
           setTimeout(() => {
             window.location.href = "home.html";
-          }, 1000);
+          }, 1200);
         } else {
           msg.textContent = "ACCESS DENIED.";
           msg.style.color = "red";
@@ -61,7 +130,6 @@
       }
     }
 
-    // start typing effect after the page loads
     window.onload = typeLine;
   </script>
 </body>
