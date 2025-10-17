@@ -1,10 +1,15 @@
-/* GENERAL RESET */
+/* ------------------------------ */
+/* GENERAL RESET + BASE SETTINGS  */
+/* ------------------------------ */
 body {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-/* HACKER TERMINAL STYLE */
+/* ------------------------------ */
+/* HACKER TERMINAL PAGE STYLES    */
+/* ------------------------------ */
 .terminal {
   background-color: #000;
   color: #00ff00;
@@ -36,7 +41,9 @@ input {
   margin-top: 10px;
 }
 
-/* ANIME WORLD STYLE */
+/* ------------------------------ */
+/* ANIME WORLD (HOME PAGE) STYLES */
+/* ------------------------------ */
 .arkworld {
   background: url('bg.jpg') center/cover no-repeat;
   height: 100vh;
@@ -50,6 +57,7 @@ input {
   overflow: hidden;
 }
 
+/* Dimmed overlay with blur */
 .overlay {
   position: absolute;
   top: 0; left: 0;
@@ -58,15 +66,18 @@ input {
   backdrop-filter: blur(3px);
 }
 
+/* Centered content */
 .content {
   position: relative;
   text-align: center;
   z-index: 2;
 }
 
+/* Title & text */
 h1 {
   font-size: 3rem;
   text-shadow: 0 0 20px #ffb6c1;
+  animation: glow 3s ease-in-out infinite alternate;
 }
 
 p {
@@ -74,6 +85,9 @@ p {
   margin-top: 10px;
 }
 
+/* ------------------------------ */
+/* BUTTON STYLING                 */
+/* ------------------------------ */
 .buttons a {
   display: inline-block;
   margin: 15px;
@@ -89,4 +103,50 @@ p {
 .buttons a:hover {
   background: #ffb6c1;
   color: black;
+  box-shadow: 0 0 15px #ffb6c1;
+}
+
+/* ------------------------------ */
+/* ANIMATION EFFECTS              */
+/* ------------------------------ */
+
+/* Fade-in when page loads */
+.fade-in {
+  animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Floating gentle motion for images */
+.character {
+  width: 220px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.6));
+  margin: 20px;
+  animation: float 5s ease-in-out infinite;
+}
+
+.background-art {
+  width: 500px;
+  opacity: 0.7;
+  animation: slowfade 12s infinite alternate;
+}
+
+/* Animations for objects */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes slowfade {
+  0% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
+
+/* Title glow animation */
+@keyframes glow {
+  from { text-shadow: 0 0 15px #ffb6c1, 0 0 30px #ffb6c1; }
+  to { text-shadow: 0 0 5px #ffb6c1, 0 0 15px #ffc0cb; }
 }
