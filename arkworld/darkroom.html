@@ -19,10 +19,7 @@
       animation: fadeIn 3s ease-in;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .fog {
       position: absolute;
@@ -41,22 +38,26 @@
       100% { transform: translate(-5%, 0%) scale(1.02); }
     }
 
+    /* ✨ Shiro with blinking + glow */
     .character {
       width: 240px;
       opacity: 0;
-      filter: brightness(0.6) drop-shadow(0 0 25px rgba(255,255,255,0.3));
-      animation: appear 4s forwards 1s;
+      animation: appear 4s forwards 1s, blink 6s infinite;
       cursor: pointer;
       z-index: 5;
       transition: filter 0.6s ease;
+      filter: brightness(0.65) drop-shadow(0 0 10px rgba(0,255,255,0.2));
     }
 
-    @keyframes appear {
-      to { opacity: 1; }
+    @keyframes appear { to { opacity: 1; } }
+    @keyframes blink {
+      0%, 92%, 100% { filter: brightness(0.65) drop-shadow(0 0 10px rgba(0,255,255,0.2)); }
+      95% { filter: brightness(0.45) drop-shadow(0 0 2px rgba(0,255,255,0.1)); }
     }
 
+    /* 💬 Speech bubble with typing effect */
     .bubble {
-      position: absolute;
+      position: fixed;
       bottom: 58%;
       left: 50%;
       transform: translateX(-50%);
@@ -68,18 +69,16 @@
       font-size: 1.2rem;
       text-align: center;
       color: #fff;
-      text-shadow: 0 0 10px #fff, 0 0 20px #ffb6c1, 0 0 35px #ffb6c1;
+      text-shadow: 0 0 10px #fff, 0 0 25px #ffb6c1;
       backdrop-filter: blur(14px);
       box-shadow: 0 0 25px rgba(255,182,193,0.4);
       opacity: 0;
-      z-index: 10;
+      z-index: 9999;
       transition: opacity 0.5s ease-in-out;
       pointer-events: none;
     }
 
-    .bubble.show {
-      opacity: 1;
-    }
+    .bubble.show { opacity: 1; }
 
     .input-box {
       position: absolute;
@@ -102,7 +101,6 @@
       font-size: 1rem;
       width: 200px;
       text-align: center;
-      transition: 0.3s;
     }
 
     .input-box button {
@@ -128,7 +126,6 @@
 </head>
 <body>
   <div class="fog"></div>
-
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="bubble" id="bubble"></div>
 
@@ -152,24 +149,32 @@
     let state = 0;
     let wrongCount = 0;
 
-    function showLine(text, duration = 3000) {
-      bubble.textContent = text;
+    // Typing animation function
+    function typeLine(text, callback) {
+      bubble.textContent = "";
       bubble.classList.add("show");
-      setTimeout(() => {
-        bubble.classList.remove("show");
-      }, duration);
+      let i = 0;
+      const interval = setInterval(() => {
+        bubble.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (callback) setTimeout(callback, 600);
+        }
+      }, 50);
     }
 
     shiro.addEventListener("click", () => {
       if (state === 0) {
-        showLine("시로: ...이제 나가.", 2500);
-        setTimeout(() => {
-          showLine("시로: 그럼... 넌 진짜 Ark를 알고 있어?", 2500);
-          setTimeout(() => {
-            showLine("시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?", 4000);
-            inputBox.style.display = "flex";
-          }, 3000);
-        }, 3000);
+        typeLine("시로: ...이제 나가.", () => {
+          typeLine("시로: 하지만...", () => {
+            typeLine("시로: 넌 Ark를 알고 있는지 확인해야겠어.", () => {
+              typeLine("시로: Ark가 제일 좋아하는 한국 스트리머는 누구야?", () => {
+                inputBox.style.display = "flex";
+              });
+            });
+          });
+        });
         state = 1;
       }
     });
@@ -178,9 +183,8 @@
       const userAnswer = answer.value.trim().toLowerCase();
 
       if (userAnswer === "gyu_0227") {
-        showLine("시로: ...맞았네. 가도 돼.", 2500);
-        inputBox.style.display = "none";
-        setTimeout(() => {
+        typeLine("시로: ...맞았네. 가도 돼.", () => {
+          inputBox.style.display = "none";
           whoosh.volume = 0.6;
           whoosh.play();
           flash.style.transition = "opacity 0.15s";
@@ -192,12 +196,12 @@
               window.location.href = "home.html";
             }, 1000);
           }, 250);
-        }, 2000);
+        });
       } else {
         wrongCount++;
-        if (wrongCount === 1) showLine("시로: 틀렸어. 다시 생각해.", 2500);
-        else if (wrongCount === 2) showLine("시로: 또 틀렸네... 진짜 몰라?", 2500);
-        else showLine("시로: 너, 일부러 틀리는 거야?", 2500);
+        if (wrongCount === 1) typeLine("시로: 틀렸어. 다시 생각해.");
+        else if (wrongCount === 2) typeLine("시로: 또 틀렸네... 진짜 몰라?");
+        else typeLine("시로: 하아... 답답하네.");
         answer.value = "";
       }
     });
