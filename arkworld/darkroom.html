@@ -2,207 +2,65 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>dark room</title>
+  <title>Dark Room</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: radial-gradient(circle at center, #0a0a0a 40%, #000 100%);
-      color: #fff;
-      font-family: 'Noto Sans KR', sans-serif;
+      background: black;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-      animation: fadeIn 3s ease-in;
+      color: white;
+      font-family: 'Noto Sans KR', sans-serif;
     }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    .fog {
-      position: absolute;
-      top: 0; left: 0;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,182,193,0.06) 0%, rgba(255,255,255,0.02) 50%, transparent 100%);
-      filter: blur(100px);
-      animation: fogDrift 20s ease-in-out infinite alternate;
-      z-index: 1;
-      opacity: 0.8;
-    }
-
-    @keyframes fogDrift {
-      0% { transform: translate(-10%, -5%) scale(1); }
-      50% { transform: translate(5%, 10%) scale(1.05); }
-      100% { transform: translate(-5%, 0%) scale(1.02); }
-    }
-
-    /* ✨ Shiro with blinking + glow */
-    .character {
-      width: 240px;
-      opacity: 0;
-      animation: appear 4s forwards 1s, blink 6s infinite;
+    #shiro {
+      width: 230px;
+      animation: float 6s ease-in-out infinite;
       cursor: pointer;
-      z-index: 5;
-      transition: filter 0.6s ease;
-      filter: brightness(0.65) drop-shadow(0 0 10px rgba(0,255,255,0.2));
     }
-
-    @keyframes appear { to { opacity: 1; } }
-    @keyframes blink {
-      0%, 92%, 100% { filter: brightness(0.65) drop-shadow(0 0 10px rgba(0,255,255,0.2)); }
-      95% { filter: brightness(0.45) drop-shadow(0 0 2px rgba(0,255,255,0.1)); }
-    }
-
-    /* 💬 Speech bubble with typing effect */
-    .bubble {
-      position: fixed;
-      bottom: 58%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-      background: rgba(255,182,193,0.18);
-      border: 2px solid rgba(255,182,193,0.9);
-      border-radius: 20px;
-      padding: 14px 20px;
-      font-size: 1.2rem;
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 0 10px #fff, 0 0 25px #ffb6c1;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 0 25px rgba(255,182,193,0.4);
-      opacity: 0;
-      z-index: 9999;
-      transition: opacity 0.5s ease-in-out;
-      pointer-events: none;
-    }
-
-    .bubble.show { opacity: 1; }
-
-    .input-box {
-      position: absolute;
-      bottom: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      z-index: 12;
-    }
-
-    .input-box input {
+    @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+    #bubble {
+      margin-top: 20px;
       background: rgba(255,255,255,0.1);
-      border: 1px solid #ffb6c1;
-      color: white;
-      border-radius: 8px;
-      padding: 8px 12px;
-      outline: none;
-      font-size: 1rem;
-      width: 200px;
-      text-align: center;
-    }
-
-    .input-box button {
-      margin-top: 10px;
-      padding: 6px 16px;
-      border: 1px solid #ffb6c1;
-      border-radius: 12px;
-      background: rgba(255,182,193,0.3);
-      color: white;
-      cursor: pointer;
-    }
-
-    .flash {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: white;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 15px;
+      padding: 10px 20px;
+      text-shadow: 0 0 8px #aefcff;
       opacity: 0;
-      pointer-events: none;
-      z-index: 20;
+      transition: opacity 0.3s ease;
     }
+    #bubble.show { opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="fog"></div>
-  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-  <div class="bubble" id="bubble"></div>
-
-  <div class="input-box" id="inputBox">
-    <input type="text" id="answer" placeholder="Enter your answer...">
-    <button id="submitBtn">confirmation</button>
-  </div>
-
-  <div class="flash" id="flash"></div>
-  <audio id="whoosh" src="whoosh.mp3" preload="auto"></audio>
+  <img id="shiro" src="shiro.png" alt="Shiro">
+  <div id="bubble"></div>
 
   <script>
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
-    const inputBox = document.getElementById("inputBox");
-    const answer = document.getElementById("answer");
-    const submitBtn = document.getElementById("submitBtn");
-    const flash = document.getElementById("flash");
-    const whoosh = document.getElementById("whoosh");
+    let stage = 0;
 
-    let state = 0;
-    let wrongCount = 0;
-
-    // Typing animation function
-    function typeLine(text, callback) {
+    function showText(text) {
       bubble.textContent = "";
       bubble.classList.add("show");
       let i = 0;
-      const interval = setInterval(() => {
-        bubble.textContent += text.charAt(i);
+      const typer = setInterval(() => {
+        bubble.textContent += text[i];
         i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-          if (callback) setTimeout(callback, 600);
-        }
-      }, 50);
+        if (i >= text.length) clearInterval(typer);
+      }, 40);
     }
 
     shiro.addEventListener("click", () => {
-      if (state === 0) {
-        typeLine("시로: ...이제 나가.", () => {
-          typeLine("시로: 하지만...", () => {
-            typeLine("시로: 넌 Ark를 알고 있는지 확인해야겠어.", () => {
-              typeLine("시로: Ark가 제일 좋아하는 한국 스트리머는 누구야?", () => {
-                inputBox.style.display = "flex";
-              });
-            });
-          });
-        });
-        state = 1;
-      }
-    });
-
-    submitBtn.addEventListener("click", () => {
-      const userAnswer = answer.value.trim().toLowerCase();
-
-      if (userAnswer === "gyu_0227") {
-        typeLine("시로: ...맞았네. 가도 돼.", () => {
-          inputBox.style.display = "none";
-          whoosh.volume = 0.6;
-          whoosh.play();
-          flash.style.transition = "opacity 0.15s";
-          flash.style.opacity = "1";
-          setTimeout(() => {
-            flash.style.transition = "opacity 1.2s";
-            flash.style.opacity = "0";
-            setTimeout(() => {
-              window.location.href = "home.html";
-            }, 1000);
-          }, 250);
-        });
-      } else {
-        wrongCount++;
-        if (wrongCount === 1) typeLine("시로: 틀렸어. 다시 생각해.");
-        else if (wrongCount === 2) typeLine("시로: 또 틀렸네... 진짜 몰라?");
-        else typeLine("시로: 하아... 답답하네.");
-        answer.value = "";
+      if (stage === 0) {
+        showText("시로: ...이제 나가.");
+        stage++;
+      } else if (stage === 1) {
+        showText("시로: 진짜로. 나가.");
+        setTimeout(() => window.location.href = "home.html", 3000);
       }
     });
   </script>
