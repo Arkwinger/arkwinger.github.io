@@ -24,12 +24,10 @@
       to { opacity: 1; }
     }
 
-    /* 🌫️ soft animated fog layer */
     .fog {
       position: absolute;
       top: 0; left: 0;
-      width: 200%;
-      height: 200%;
+      width: 200%; height: 200%;
       background: radial-gradient(circle, rgba(255,182,193,0.06) 0%, rgba(255,255,255,0.02) 50%, transparent 100%);
       filter: blur(100px);
       animation: fogDrift 20s ease-in-out infinite alternate;
@@ -57,35 +55,32 @@
       to { opacity: 1; }
     }
 
-    /* 💬 glowing bubble above her */
     .bubble {
       position: absolute;
-      bottom: 55%;
+      bottom: 58%;
       left: 50%;
       transform: translateX(-50%);
-      max-width: 320px;
-      background: rgba(255, 182, 193, 0.15);
-      border: 2px solid rgba(255, 182, 193, 0.8);
-      border-radius: 18px;
+      width: 320px;
+      background: rgba(255,182,193,0.18);
+      border: 2px solid rgba(255,182,193,0.9);
+      border-radius: 20px;
       padding: 14px 20px;
       font-size: 1.2rem;
       text-align: center;
       color: #fff;
-      text-shadow: 0 0 8px #fff, 0 0 18px #ffb6c1, 0 0 35px #ffb6c1;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ffb6c1, 0 0 35px #ffb6c1;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 25px rgba(255,182,193,0.4);
       opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 30px rgba(255,182,193,0.4);
       z-index: 10;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
     }
 
-    .bubble.show { opacity: 1; }
-
-    .talking {
-      filter: brightness(0.9) drop-shadow(0 0 40px rgba(255,182,193,0.7));
+    .bubble.show {
+      opacity: 1;
     }
 
-    /* input */
     .input-box {
       position: absolute;
       bottom: 10%;
@@ -107,11 +102,7 @@
       font-size: 1rem;
       width: 200px;
       text-align: center;
-      transition: all 0.3s;
-    }
-
-    .input-box input:focus {
-      box-shadow: 0 0 10px #ffb6c1;
+      transition: 0.3s;
     }
 
     .input-box button {
@@ -119,18 +110,11 @@
       padding: 6px 16px;
       border: 1px solid #ffb6c1;
       border-radius: 12px;
-      background: rgba(255, 182, 193, 0.3);
+      background: rgba(255,182,193,0.3);
       color: white;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    .input-box button:hover {
-      background: #ffb6c1;
-      color: black;
-    }
-
-    /* flash teleport */
     .flash {
       position: fixed;
       top: 0; left: 0;
@@ -149,8 +133,8 @@
   <div class="bubble" id="bubble"></div>
 
   <div class="input-box" id="inputBox">
-    <input type="text" id="answer" placeholder="답을 입력하세요...">
-    <button id="submitBtn">확인</button>
+    <input type="text" id="answer" placeholder="Enter your answer...">
+    <button id="submitBtn">confirmation</button>
   </div>
 
   <div class="flash" id="flash"></div>
@@ -168,29 +152,34 @@
     let state = 0;
     let wrongCount = 0;
 
-    // first click
+    function showLine(text, duration = 3000) {
+      bubble.textContent = text;
+      bubble.classList.add("show");
+      setTimeout(() => {
+        bubble.classList.remove("show");
+      }, duration);
+    }
+
     shiro.addEventListener("click", () => {
       if (state === 0) {
-        showLine("시로: ...이제 나가.");
+        showLine("시로: ...이제 나가.", 2500);
         setTimeout(() => {
-          showLine("시로: 그럼... 넌 진짜 Ark를 알고 있어?");
+          showLine("시로: 그럼... 넌 진짜 Ark를 알고 있어?", 2500);
           setTimeout(() => {
-            showLine("시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?");
+            showLine("시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?", 4000);
             inputBox.style.display = "flex";
-          }, 2500);
+          }, 3000);
         }, 3000);
         state = 1;
       }
     });
 
-    // answer logic
     submitBtn.addEventListener("click", () => {
       const userAnswer = answer.value.trim().toLowerCase();
 
       if (userAnswer === "gyu_0227") {
-        showLine("시로: ...맞았네. 가도 돼.");
+        showLine("시로: ...맞았네. 가도 돼.", 2500);
         inputBox.style.display = "none";
-
         setTimeout(() => {
           whoosh.volume = 0.6;
           whoosh.play();
@@ -206,19 +195,12 @@
         }, 2000);
       } else {
         wrongCount++;
-        if (wrongCount === 1) showLine("시로: 틀렸어. 다시 생각해.");
-        else if (wrongCount === 2) showLine("시로: 또 틀렸네... 진짜 몰라?");
-        else showLine("시로: 너, 일부러 틀리는 거야?");
+        if (wrongCount === 1) showLine("시로: 틀렸어. 다시 생각해.", 2500);
+        else if (wrongCount === 2) showLine("시로: 또 틀렸네... 진짜 몰라?", 2500);
+        else showLine("시로: 너, 일부러 틀리는 거야?", 2500);
         answer.value = "";
       }
     });
-
-    // function to show dialogue
-    function showLine(text) {
-      bubble.textContent = text;
-      bubble.classList.add("show");
-      setTimeout(() => bubble.classList.remove("show"), 4000);
-    }
   </script>
 </body>
 </html>
