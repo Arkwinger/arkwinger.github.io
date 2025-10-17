@@ -3,207 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <title>🌙 Arkwinger’s World</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
       margin: 0;
       overflow: hidden;
       font-family: 'Noto Sans KR', sans-serif;
-    }
-
-    .arkworld {
       background: url('bp.jpg') center/cover no-repeat;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      position: relative;
       color: #fff;
-      cursor: crosshair;
     }
 
     .overlay {
-      position: absolute;
-      top: 0; left: 0;
+      position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(0,0,0,0.45);
       backdrop-filter: blur(2px);
       z-index: 0;
     }
 
     .character {
       position: absolute;
-      top: 48%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 220px;
-      animation: float 6s ease-in-out infinite, blink 6s infinite;
-      z-index: 2;
+      width: 230px;
+      z-index: 3;
       cursor: pointer;
-      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
-      transition: filter 0.4s ease;
+      animation: float 6s ease-in-out infinite, blink 8s infinite;
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
     }
 
     @keyframes float {
-      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-      50% { transform: translate(-50%, -50%) translateY(-8px); }
+      0%,100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-10px); }
     }
 
     @keyframes blink {
-      0%, 92%, 100% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); }
-      95% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)); }
+      0%,90%,100% { opacity: 1; }
+      95% { opacity: 0.7; }
     }
 
-    .message {
-      position: absolute;
-      top: 12%;
-      text-align: center;
-      z-index: 2;
-      font-size: 1.6rem;
-      text-shadow: 0 0 10px #ffb6c1;
-      animation: fadeIn 2s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Shiro’s speech bubble */
     .bubble {
-      position: fixed;
-      bottom: 58%;
+      position: absolute;
+      top: 30%;
       left: 50%;
       transform: translateX(-50%);
-      width: 320px;
-      background: rgba(255, 182, 193, 0.18);
-      border: 2px solid rgba(255, 182, 193, 0.9);
-      border-radius: 20px;
-      padding: 14px 20px;
-      font-size: 1.2rem;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.4);
+      padding: 12px 20px;
+      border-radius: 18px;
+      max-width: 70%;
       text-align: center;
-      color: #fff;
-      text-shadow: 0 0 10px #fff, 0 0 25px #ffb6c1;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 0 25px rgba(255, 182, 193, 0.4);
+      font-size: 1.1rem;
       opacity: 0;
-      z-index: 9999;
-      transition: opacity 0.4s ease-in-out;
-      pointer-events: none;
+      color: #fff;
+      text-shadow: 0 0 10px #b8f3ff;
+      transition: opacity 0.5s ease;
+      z-index: 5;
     }
 
     .bubble.show { opacity: 1; }
 
-    .orb {
-      position: absolute;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 182, 193, 0.6);
-      animation: drift 18s linear infinite;
-    }
-
-    @keyframes drift {
-      0% { transform: translateY(0) translateX(0); opacity: 1; }
-      100% { transform: translateY(-110vh) translateX(30vw); opacity: 0; }
-    }
-
     .music-btn {
       position: absolute;
-      bottom: 6%;
-      right: 6%;
-      padding: 8px 18px;
-      font-size: 0.9rem;
-      border: 1px solid #ffb6c1;
-      background: rgba(0, 0, 0, 0.3);
-      color: white;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid #fff;
       border-radius: 20px;
+      padding: 8px 16px;
       cursor: pointer;
-      z-index: 999;
-      backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      backdrop-filter: blur(3px);
     }
-
-    .music-btn:hover {
-      background: #ffb6c1;
-      color: black;
-    }
+    .music-btn:hover { background: rgba(255,255,255,0.2); }
   </style>
 </head>
-<body class="arkworld">
+<body>
   <div class="overlay"></div>
-  <div class="message">🌸 Arkwinger’s World 🌙</div>
-  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-  <div class="bubble" id="bubble"></div>
+
+  <img src="shiro.png" alt="Shiro" id="shiro" class="character">
+  <div id="bubble" class="bubble"></div>
+
   <button class="music-btn" id="musicBtn">🎵 Play Music</button>
+  <audio id="bgm" src="bgm.mp3" loop></audio>
 
   <script>
-    // 🌸 ambient particles
-    for (let i = 0; i < 15; i++) {
-      const orb = document.createElement("div");
-      orb.className = "orb";
-      orb.style.left = Math.random() * 100 + "vw";
-      orb.style.top = Math.random() * 100 + "vh";
-      orb.style.animationDelay = Math.random() * 10 + "s";
-      orb.style.animationDuration = 15 + Math.random() * 10 + "s";
-      document.body.appendChild(orb);
-    }
-
-    const shiro = document.getElementById("shiro");
-    const bubble = document.getElementById("bubble");
-
-    // 🩶 New balanced dialogue list
-    const lines = [
+    const shiroLines = [
       "시로: 또 왔네. 뭐, 상관은 없어.",
-      "시로: 진짜 하늘 같지 않아? 이상하지.",
-      "시로: 조용해서 좋은데... 네 발소리는 시끄럽다.",
-      "시로: 뭐 그렇게 쳐다봐?",
-      "시로: 넌 Ark를 찾고 있는 거야?",
-      "시로: Ark는 꽤 멋진 사람이야. 가끔 피곤하게 굴지만.",
-      "시로: 난 Ark의 보조야. 여길 관리하는 중이지.",
-      "시로: 이상한 꿈 꾸고 있는 거 아니야?",
-      "시로: Ark가 널 자주 언급해. 신기하지 않아?",
-      "시로: 이곳은... 아직 숨 쉬고 있어."
+      "시로: 조용하네... 좋아.",
+      "시로: 아크 찾고 있어?",
+      "시로: 아크는 바보 같지만 멋있어.",
+      "시로: 오늘 하늘 예뻐. 뭐, 조금.",
+      "시로: 나한테 말 거는 이유는 뭐야?",
+      "시로: 아크는 가끔 나한테 이상한 질문을 해.",
+      "시로: 사람들은 복잡해. 난 계산이 더 좋아.",
+      "시로: 네가 없어도 여긴 그대로야.",
+      "시로: 아크는 지금도 뭔가 만들고 있을걸."
     ];
 
+    const bubble = document.getElementById("bubble");
+    const shiro = document.getElementById("shiro");
     let index = 0;
 
-    function showLine(text) {
+    function showLine(line) {
       bubble.textContent = "";
       bubble.classList.add("show");
       let i = 0;
-      const type = setInterval(() => {
-        bubble.textContent += text.charAt(i);
+      const typer = setInterval(() => {
+        bubble.textContent += line[i];
         i++;
-        if (i >= text.length) {
-          clearInterval(type);
-          setTimeout(() => bubble.classList.remove("show"), 4000);
-        }
+        if (i >= line.length) clearInterval(typer);
       }, 40);
     }
 
     shiro.addEventListener("click", () => {
-      showLine(lines[index]);
-      index = (index + 1) % lines.length;
+      showLine(shiroLines[index]);
+      index = (index + 1) % shiroLines.length;
     });
 
-    // 🎵 music button
     const musicBtn = document.getElementById("musicBtn");
-    let musicStarted = false;
-
+    const bgm = document.getElementById("bgm");
     musicBtn.addEventListener("click", () => {
-      if (!musicStarted) {
-        const iframe = document.createElement("iframe");
-        iframe.width = 0; iframe.height = 0;
-        iframe.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw";
-        iframe.allow = "autoplay";
-        iframe.style.position = "absolute";
-        iframe.style.left = "-9999px";
-        document.body.appendChild(iframe);
-        musicStarted = true;
+      if (bgm.paused) {
+        bgm.play();
         musicBtn.textContent = "⏸️ Music Playing";
       } else {
-        alert("시로: 음악은 계속 흐르고 있어...");
+        bgm.pause();
+        musicBtn.textContent = "🎵 Play Music";
       }
     });
   </script>
