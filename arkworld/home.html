@@ -50,7 +50,7 @@
       50% { transform: translate(-50%, -50%) translateY(-10px); }
     }
 
-    /* 🌙 World title */
+    /* 🌙 Title line */
     .message {
       position: absolute;
       top: 12%;
@@ -143,7 +143,7 @@
 <body class="arkworld">
   <div class="overlay"></div>
 
-  <!-- Title text (changed) -->
+  <!-- Title line -->
   <div class="message">여긴... 아무 일도 일어나지 않는 곳이야.</div>
 
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
@@ -163,7 +163,7 @@
       document.body.appendChild(orb);
     }
 
-    // 💬 Shiro dialogue (nonchalant tone)
+    // 💬 Shiro dialogue + secret click counter
     const shiroLines = [
       "시로: 또 왔네. 뭐, 상관은 없어.",
       "시로: 진짜 하늘 같지 않아. 이상하지?",
@@ -180,15 +180,26 @@
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
     let index = 0;
+    let clicks = 0;
 
     shiro.addEventListener("click", () => {
       bubble.textContent = shiroLines[index];
       bubble.classList.add("show");
       setTimeout(() => bubble.classList.remove("show"), 4000);
       index = (index + 1) % shiroLines.length;
+
+      // count clicks
+      clicks++;
+      if (clicks >= 10) {
+        document.body.style.transition = "background 2s ease";
+        document.body.style.background = "black";
+        setTimeout(() => {
+          window.location.href = "darkroom.html";
+        }, 2500);
+      }
     });
 
-    // 🎧 Music toggle (local MP3 preferred)
+    // 🎧 Music toggle (local MP3 version)
     const musicBtn = document.getElementById("music-btn");
     let audio = new Audio("bgm.mp3");
     audio.loop = true;
