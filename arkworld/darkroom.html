@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>dark room</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      color: #fff;
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      animation: fadeIn 3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .text {
+      opacity: 0;
+      font-size: 1.4rem;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+      animation: appear 6s forwards 2s;
+    }
+
+    @keyframes appear {
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="text">시로: ...이제 나가.</div>
+
+  <script>
+    setTimeout(() => {
+      document.body.style.transition = "opacity 2s";
+      document.body.style.opacity = "0";
+    }, 7000);
+  </script>
+</body>
+</html>
