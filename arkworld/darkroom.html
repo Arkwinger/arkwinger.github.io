@@ -40,7 +40,7 @@
       to { opacity: 1; }
     }
 
-    /* 💬 Shiro-style speech bubble */
+    /* 💬 Shiro bubble */
     .bubble {
       position: absolute;
       top: 35%;
@@ -62,11 +62,54 @@
       z-index: 3;
     }
 
-    .bubble.show {
-      opacity: 1;
+    .bubble.show { opacity: 1; }
+
+    /* input box */
+    .input-box {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 4;
     }
 
-    /* ⚡ flash teleport */
+    .input-box input {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #ffb6c1;
+      color: white;
+      border-radius: 8px;
+      padding: 8px 12px;
+      outline: none;
+      font-size: 1rem;
+      width: 200px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .input-box input:focus {
+      box-shadow: 0 0 10px #ffb6c1;
+    }
+
+    .input-box button {
+      margin-top: 10px;
+      padding: 6px 16px;
+      border: 1px solid #ffb6c1;
+      border-radius: 12px;
+      background: rgba(255, 182, 193, 0.2);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .input-box button:hover {
+      background: #ffb6c1;
+      color: black;
+    }
+
+    /* flash teleport */
     .flash {
       position: fixed;
       top: 0; left: 0;
@@ -81,35 +124,48 @@
 <body>
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="bubble" id="bubble"></div>
+  <div class="input-box" id="inputBox">
+    <input type="text" id="answer" placeholder="답을 입력하세요...">
+    <button id="submitBtn">확인</button>
+  </div>
   <div class="flash" id="flash"></div>
-
-  <!-- whoosh sound -->
   <audio id="whoosh" src="whoosh.mp3" preload="auto"></audio>
 
   <script>
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
+    const inputBox = document.getElementById("inputBox");
+    const answer = document.getElementById("answer");
+    const submitBtn = document.getElementById("submitBtn");
     const flash = document.getElementById("flash");
     const whoosh = document.getElementById("whoosh");
-    let clicks = 0;
+
+    let state = 0; // 0=quiet, 1=asked, 2=answered
 
     shiro.addEventListener("click", () => {
-      clicks++;
-
-      if (clicks === 1) {
+      if (state === 0) {
         bubble.textContent = "시로: ...이제 나가.";
         bubble.classList.add("show");
-        setTimeout(() => bubble.classList.remove("show"), 4000);
-      } 
-      else if (clicks === 2) {
-        bubble.textContent = "시로: 널 내보낼 거야.";
-        bubble.classList.add("show");
+        setTimeout(() => {
+          bubble.textContent = "시로: 그럼... 넌 진짜 나를 알고 있어?";
+          setTimeout(() => {
+            bubble.textContent = "시로: Dom의 제일 좋아하는 한국 스트리머는 누구야?";
+            inputBox.style.display = "flex";
+          }, 2000);
+        }, 3000);
+        state = 1;
+      }
+    });
 
+    submitBtn.addEventListener("click", () => {
+      const userAnswer = answer.value.trim().toLowerCase();
+      if (userAnswer === "gyu_0227") {
+        bubble.textContent = "시로: ...맞았네. 가도 돼.";
+        bubble.classList.add("show");
+        inputBox.style.display = "none";
         setTimeout(() => {
           whoosh.volume = 0.6;
           whoosh.play();
-
-          // flash + teleport
           flash.style.transition = "opacity 0.15s";
           flash.style.opacity = "1";
           setTimeout(() => {
@@ -119,7 +175,11 @@
               window.location.href = "home.html";
             }, 1000);
           }, 250);
-        }, 800);
+        }, 2000);
+      } else {
+        bubble.textContent = "시로: 틀렸어. 여기서 나가지 마.";
+        bubble.classList.add("show");
+        answer.value = "";
       }
     });
   </script>
