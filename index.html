@@ -7,7 +7,7 @@
   <style>
     body {
       background: #0b0c10;
-      color: #f2f2f2;
+      color: #e5e5e5;
       font-family: 'Poppins', sans-serif;
       display: flex;
       flex-direction: column;
@@ -15,29 +15,67 @@
       justify-content: center;
       height: 100vh;
       text-align: center;
+      line-height: 1.6;
     }
-    h1 { font-size: 2rem; margin-bottom: 20px; color: #9f7aea; }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 35px;
+      color: #bbaaff;
+      letter-spacing: 1px;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+
     a {
-      display: inline-block;
-      margin: 10px;
-      padding: 14px 26px;
-      background: linear-gradient(90deg, #8e2de2, #4a00e0);
-      color: #fff;
-      border-radius: 10px;
+      display: block;
+      width: 250px;
+      padding: 12px 20px;
+      background: #14161c;
+      color: #e5e5e5;
+      border: 1px solid #383a44;
+      border-radius: 8px;
       text-decoration: none;
-      transition: 0.2s;
+      transition: 0.25s ease;
+      font-size: 0.95rem;
     }
+
     a:hover {
-      transform: scale(1.05);
-      background: linear-gradient(90deg, #6d28d9, #3b82f6);
+      background: #1e212a;
+      border-color: #9f7aea;
+      color: #d6caff;
+      transform: translateY(-2px);
     }
-    p { color: #aaa; margin-top: 30px; font-size: 0.9rem; }
+
+    p {
+      color: #888;
+      margin-top: 40px;
+      font-size: 0.85rem;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.8rem;
+      color: #555;
+    }
   </style>
 </head>
 <body>
   <h1>Arkwinger Projects</h1>
-  <a href="playground.html">💻 CTF Playground</a>
-  <a href="korean-vocab.html">🧠 Korean Vocabulary Quiz</a>
-  <p>Simple static projects hosted on GitHub Pages</p>
+
+  <div class="links">
+    <a href="arkworld/home.html">🌙 Enter Arkwinger’s World</a>
+    <a href="playground.html">💻 CTF Playground</a>
+    <a href="korean-vocab.html">🧠 Korean Vocabulary Quiz</a>
+  </div>
+
+  <p>Simple static spaces — click a section to explore.</p>
+  <footer>Maintained by Arkwinger • GitHub Pages</footer>
 </body>
 </html>
