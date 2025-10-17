@@ -1,49 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Arkwinger Access Terminal</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background-color: #000;
+      background: #000;
       color: #00ff88;
-      font-family: 'Courier New', monospace;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-start;
-      justify-content: left;
+      font-family: "Courier New", monospace;
       padding: 40px;
-      flex-direction: column;
+      overflow: hidden;
     }
-
     #terminal {
       width: 100%;
       height: 100%;
       white-space: pre-wrap;
       line-height: 1.4;
-      overflow-y: auto;
-      user-select: none;
     }
-
-    .line {
-      display: block;
-    }
-
+    .line { display: block; }
     .cursor {
       display: inline-block;
       width: 10px;
-      background-color: #00ff88;
+      background: #00ff88;
       animation: blink 0.9s infinite;
       margin-left: 2px;
     }
-
     @keyframes blink {
       0%, 50% { opacity: 1; }
       50%, 100% { opacity: 0; }
     }
-
     input {
       background: transparent;
       border: none;
@@ -53,12 +40,10 @@
       font-size: 1rem;
       width: 300px;
     }
-
     #input-line {
       display: flex;
       align-items: center;
     }
-
     #overlay {
       position: fixed;
       top: 0;
@@ -75,25 +60,23 @@
 </head>
 <body>
   <div id="terminal">
-    <div class="line">Initializing Arkwinger Secure Access Terminal...</div>
-    <div class="line">Boot sequence complete.</div>
+    <div class="line">[BOOT] Initializing Arkwinger Terminal...</div>
+    <div class="line">[OK] Quantum Node online.</div>
+    <div class="line">[OK] System integrity verified.</div>
     <div class="line">User: guest</div>
-    <div class="line">System: Quantum Node v3.4</div>
-    <div class="line">-----------------------------</div>
+    <div class="line">Access point: /ark/terminal</div>
+    <div class="line">-------------------------------------------</div>
     <div class="line">Enter password to access Arkwinger’s World:</div>
     <div id="input-line">
-      <span>&gt; </span><input type="password" id="input" autofocus>
+      <span>&gt; </span><input type="password" id="input" autofocus />
       <span class="cursor" id="cursor"></span>
     </div>
   </div>
-
   <div id="overlay"></div>
-
   <script>
     const input = document.getElementById("input");
     const terminal = document.getElementById("terminal");
     const overlay = document.getElementById("overlay");
-
     function appendLine(text) {
       const line = document.createElement("div");
       line.classList.add("line");
@@ -101,30 +84,24 @@
       terminal.appendChild(line);
       terminal.scrollTop = terminal.scrollHeight;
     }
-
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         const val = input.value.trim().toLowerCase();
         appendLine("> " + "*".repeat(val.length));
         input.value = "";
-
         if (val === "shiro") {
-          appendLine("Access granted. Redirecting...");
+          appendLine("[ACCESS GRANTED] Welcome back, Arkwinger.");
           setTimeout(() => {
             overlay.style.opacity = "1";
             setTimeout(() => {
               window.location.href = "arkworld/home.html";
-            }, 1200);
+            }, 1000);
           }, 1000);
         } else {
-          appendLine("Access denied. Try again.");
+          appendLine("[ERROR] Invalid credentials.");
         }
       }
     });
-
-    // cursor blink fix for mobile
-    input.addEventListener("blur", () => document.getElementById("cursor").style.display = "none");
-    input.addEventListener("focus", () => document.getElementById("cursor").style.display = "inline-block");
   </script>
 </body>
 </html>
