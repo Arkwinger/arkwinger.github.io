@@ -140,16 +140,16 @@
     const flash = document.getElementById("flash");
     const whoosh = document.getElementById("whoosh");
 
-    let state = 0; // 0=quiet, 1=asked, 2=answered
+    let state = 0; // 0=quiet, 1=asked
 
     shiro.addEventListener("click", () => {
       if (state === 0) {
         bubble.textContent = "시로: ...이제 나가.";
         bubble.classList.add("show");
         setTimeout(() => {
-          bubble.textContent = "시로: 그럼... 넌 진짜 나를 알고 있어?";
+          bubble.textContent = "시로: 그럼... 넌 진짜 Ark를 알고 있어?";
           setTimeout(() => {
-            bubble.textContent = "시로: Dom의 제일 좋아하는 한국 스트리머는 누구야?";
+            bubble.textContent = "시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?";
             inputBox.style.display = "flex";
           }, 2000);
         }, 3000);
