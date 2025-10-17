@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>🌙 Arkwinger’s World</title>
+  <style>
+    body {
+      margin: 0;
+      background: url('bp.jpg') center/cover no-repeat;
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(2px);
+    }
+
+    .character {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 230px;
+      z-index: 5;
+      animation: float 6s ease-in-out infinite, blink 7s infinite;
+      cursor: pointer;
+      filter: drop-shadow(0 0 12px rgba(255,255,255,0.4));
+    }
+
+    @keyframes float {
+      0%,100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-10px); }
+    }
+
+    @keyframes blink {
+      0%,90%,100% { opacity: 1; }
+      95% { opacity: 0.8; }
+    }
+
+    .bubble {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 15px;
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 1.1rem;
+      color: #fff;
+      text-shadow: 0 0 8px #aefcff;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+    .bubble.show { opacity: 1; }
+
+    .music-btn {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #fff;
+      color: white;
+      border-radius: 20px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .music-btn:hover { background: rgba(255,255,255,0.2); }
+
+    .fadeout {
+      animation: fadeToBlack 2s forwards;
+    }
+    @keyframes fadeToBlack {
+      to { background-color: black; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
+  <div class="bubble" id="bubble"></div>
+  <button id="musicBtn" class="music-btn">🎵 Play Music</button>
+  <audio id="bgm" src="bgm.mp3" loop></audio>
+
+  <script>
+    const shiro = document.getElementById("shiro");
+    const bubble = document.getElementById("bubble");
+    const bgm = document.getElementById("bgm");
+    const musicBtn = document.getElementById("musicBtn");
+    let clicks = 0;
+    let index = 0;
+
+    const shiroLines = [
+      "시로: 또 왔네. 뭐, 상관은 없어.",
+      "시로: 아크 찾고 있어?",
+      "시로: 아크는 바보 같지만 멋있어.",
+      "시로: 사람들은 복잡해. 난 계산이 더 좋아.",
+      "시로: 나한테 말 거는 이유는 뭐야?",
+      "시로: 아크는 지금도 뭔가 만들고 있을걸.",
+      "시로: 여기선 시간도 멈춰있어.",
+      "시로: 아크는 정말 대단해.",
+      "시로: 조용하네... 좋아.",
+      "시로: ...너 너무 많이 눌렀어."
+    ];
+
+    function showBubble(line) {
+      bubble.textContent = "";
+      bubble.classList.add("show");
+      let i = 0;
+      const typer = setInterval(() => {
+        bubble.textContent += line[i];
+        i++;
+        if (i >= line.length) clearInterval(typer);
+      }, 40);
+      setTimeout(() => bubble.classList.remove("show"), 4000);
+    }
+
+    shiro.addEventListener("click", () => {
+      showBubble(shiroLines[index]);
+      index = (index + 1) % shiroLines.length;
+      clicks++;
+      if (clicks === 10) {
+        document.body.classList.add("fadeout");
+        setTimeout(() => window.location.href = "darkroom.html", 2000);
+      }
+    });
+
+    musicBtn.addEventListener("click", () => {
+      if (bgm.paused) { bgm.play(); musicBtn.textContent = "⏸ 음악 재생 중"; }
+      else { bgm.pause(); musicBtn.textContent = "🎵 음악 재생"; }
+    });
+  </script>
+</body>
+</html>
