@@ -25,6 +25,7 @@
 
     let index = 0;
     const typewriter = document.getElementById("typewriter");
+
     function typeLine() {
       if (index < lines.length) {
         let line = lines[index];
@@ -42,7 +43,6 @@
         }, 40);
       }
     }
-    typeLine();
 
     function checkKey(e) {
       if (e.key === "Enter") {
@@ -60,7 +60,9 @@
         }
       }
     }
+
+    // start typing effect after the page loads
+    window.onload = typeLine;
   </script>
 </body>
 </html>
-
