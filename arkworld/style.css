@@ -1,15 +1,11 @@
-/* ------------------------------ */
-/* GENERAL RESET + BASE SETTINGS  */
-/* ------------------------------ */
+/* GENERAL RESET */
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ------------------------------ */
-/* HACKER TERMINAL STYLE           */
-/* ------------------------------ */
+/* HACKER TERMINAL PAGE */
 .terminal {
   background-color: #000;
   color: #00ff00;
@@ -41,41 +37,39 @@ input {
   margin-top: 10px;
 }
 
-/* ------------------------------ */
-/* ANIME WORLD (HOME PAGE) STYLES */
-/* ------------------------------ */
+/* ANIME WORLD PAGE */
 .arkworld {
   background: url('bg.jpg') center/cover no-repeat;
   height: 100vh;
   color: white;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   font-family: 'Noto Sans KR', sans-serif;
   position: relative;
   overflow: hidden;
 }
 
-/* Dimmed overlay with blur */
+/* Overlay */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.4);
   backdrop-filter: blur(3px);
 }
 
-/* Centered content */
+/* Content */
 .content {
   position: relative;
   text-align: center;
   z-index: 2;
 }
 
-/* Title & text */
+/* Title */
 h1 {
   font-size: 3rem;
   text-shadow: 0 0 20px #ffb6c1;
@@ -106,47 +100,29 @@ p {
   box-shadow: 0 0 15px #ffb6c1;
 }
 
-/* ------------------------------ */
-/* ANIMATION EFFECTS              */
-/* ------------------------------ */
+/* Animations */
 .fade-in {
   animation: fadeIn 2s ease-in;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .character {
   width: 240px;
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.7));
   margin: 30px 0;
   animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
-/* Title glow animation */
 @keyframes glow {
-  from {
-    text-shadow: 0 0 15px #ffb6c1, 0 0 30px #ffb6c1;
-  }
-  to {
-    text-shadow: 0 0 5px #ffb6c1, 0 0 15px #ffc0cb;
-  }
+  from { text-shadow: 0 0 15px #ffb6c1, 0 0 30px #ffb6c1; }
+  to { text-shadow: 0 0 5px #ffb6c1, 0 0 15px #ffc0cb; }
 }
