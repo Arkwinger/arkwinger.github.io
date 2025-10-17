@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Arkwinger’s World</title>
+  <title>🌙 Arkwinger’s World</title>
   <style>
     body {
       margin: 0;
@@ -62,7 +62,6 @@
       transition: opacity 0.3s ease;
       z-index: 10;
     }
-
     .bubble.show { opacity: 1; }
 
     .music-btn {
@@ -78,11 +77,17 @@
       font-size: 0.9rem;
     }
     .music-btn:hover { background: rgba(255,255,255,0.2); }
+
+    .fadeout {
+      animation: fadeToBlack 2s forwards;
+    }
+    @keyframes fadeToBlack {
+      to { background-color: black; opacity: 0; }
+    }
   </style>
 </head>
 <body>
   <div class="overlay"></div>
-
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="bubble" id="bubble"></div>
   <button id="musicBtn" class="music-btn">🎵 Play Music</button>
@@ -125,16 +130,15 @@
       showBubble(shiroLines[index]);
       index = (index + 1) % shiroLines.length;
       clicks++;
-      if (clicks >= 10) {
-        document.body.style.transition = "background 2s ease";
-        document.body.style.background = "black";
-        setTimeout(() => window.location.href = "darkroom.html", 2500);
+      if (clicks === 10) {
+        document.body.classList.add("fadeout");
+        setTimeout(() => window.location.href = "darkroom.html", 2000);
       }
     });
 
     musicBtn.addEventListener("click", () => {
-      if (bgm.paused) { bgm.play(); musicBtn.textContent = "⏸ Music Playing"; }
-      else { bgm.pause(); musicBtn.textContent = "🎵 Play Music"; }
+      if (bgm.paused) { bgm.play(); musicBtn.textContent = "⏸ 음악 재생 중"; }
+      else { bgm.pause(); musicBtn.textContent = "🎵 음악 재생"; }
     });
   </script>
 </body>
