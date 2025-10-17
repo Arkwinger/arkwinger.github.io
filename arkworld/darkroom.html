@@ -27,40 +27,46 @@
       position: relative;
       width: 240px;
       opacity: 0;
-      filter: brightness(0.6) drop-shadow(0 0 20px rgba(255,255,255,0.25));
+      filter: brightness(0.6) drop-shadow(0 0 25px rgba(255,255,255,0.3));
       animation: appear 4s forwards 1s;
       cursor: pointer;
       z-index: 2;
+      transition: filter 0.6s ease;
     }
 
     @keyframes appear {
       to { opacity: 1; }
     }
 
-    /* 💬 speech bubble directly above Shiro */
+    /* 💬 brighter glowing bubble above Shiro */
     .bubble {
       position: absolute;
-      bottom: 100%; /* position just above Shiro */
+      bottom: 105%; /* slightly above head */
       left: 50%;
       transform: translateX(-50%) translateY(-10px);
-      max-width: 280px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 2px solid rgba(255, 182, 193, 0.6);
+      max-width: 300px;
+      background: linear-gradient(145deg, rgba(255,200,220,0.3), rgba(255,255,255,0.1));
+      border: 2px solid rgba(255, 182, 193, 0.9);
+      box-shadow: 0 0 20px rgba(255,182,193,0.5), 0 0 40px rgba(255,182,193,0.25);
       border-radius: 20px;
-      padding: 10px 16px;
-      font-size: 1.05rem;
+      padding: 14px 20px;
+      font-size: 1.15rem;
       text-align: center;
       color: #fff;
-      text-shadow: 0 0 5px #ffb6c1;
+      text-shadow: 0 0 8px #ffffff, 0 0 14px #ffb6c1;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.6s ease;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       z-index: 3;
     }
 
     .bubble.show {
       opacity: 1;
+    }
+
+    .talking {
+      filter: brightness(0.9) drop-shadow(0 0 35px rgba(255,182,193,0.6));
     }
 
     /* input box */
@@ -86,7 +92,7 @@
     }
 
     .input-box input:focus {
-      box-shadow: 0 0 10px #ffb6c1;
+      box-shadow: 0 0 12px #ffb6c1;
     }
 
     .input-box button {
@@ -94,7 +100,7 @@
       padding: 6px 16px;
       border: 1px solid #ffb6c1;
       border-radius: 12px;
-      background: rgba(255, 182, 193, 0.2);
+      background: rgba(255, 182, 193, 0.25);
       color: white;
       cursor: pointer;
       transition: 0.3s;
@@ -140,18 +146,21 @@
     const flash = document.getElementById("flash");
     const whoosh = document.getElementById("whoosh");
 
-    let state = 0; // 0 = idle, 1 = question mode
+    let state = 0;
     let wrongCount = 0;
 
-    // 🩶 first click triggers dialogue
     shiro.addEventListener("click", () => {
       if (state === 0) {
         bubble.textContent = "시로: ...이제 나가.";
         bubble.classList.add("show");
+        shiro.classList.add("talking");
         setTimeout(() => {
+          shiro.classList.remove("talking");
           bubble.textContent = "시로: 그럼... 넌 진짜 Ark를 알고 있어?";
+          shiro.classList.add("talking");
           setTimeout(() => {
             bubble.textContent = "시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?";
+            shiro.classList.add("talking");
             inputBox.style.display = "flex";
           }, 2000);
         }, 3000);
@@ -159,14 +168,14 @@
       }
     });
 
-    // 🩶 answer handling
     submitBtn.addEventListener("click", () => {
       const userAnswer = answer.value.trim().toLowerCase();
+      shiro.classList.add("talking");
+
       if (userAnswer === "gyu_0227") {
         bubble.textContent = "시로: ...맞았네. 가도 돼.";
         bubble.classList.add("show");
         inputBox.style.display = "none";
-
         setTimeout(() => {
           whoosh.volume = 0.6;
           whoosh.play();
