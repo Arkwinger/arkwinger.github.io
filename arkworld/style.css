@@ -8,40 +8,6 @@ body {
 }
 
 /* ------------------------------ */
-/* HACKER TERMINAL PAGE STYLES    */
-/* ------------------------------ */
-.terminal {
-  background-color: #000;
-  color: #00ff00;
-  font-family: "Courier New", monospace;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: left;
-  white-space: pre-line;
-}
-
-.terminal-container {
-  width: 80%;
-  max-width: 600px;
-}
-
-input {
-  background: transparent;
-  color: #00ff00;
-  border: none;
-  border-bottom: 1px solid #00ff00;
-  width: 80%;
-  font-size: 1rem;
-  outline: none;
-}
-
-#msg {
-  margin-top: 10px;
-}
-
-/* ------------------------------ */
 /* ANIME WORLD (HOME PAGE) STYLES */
 /* ------------------------------ */
 .arkworld {
@@ -85,9 +51,7 @@ p {
   margin-top: 10px;
 }
 
-/* ------------------------------ */
-/* BUTTON STYLING                 */
-/* ------------------------------ */
+/* Buttons */
 .buttons a {
   display: inline-block;
   margin: 15px;
@@ -109,8 +73,6 @@ p {
 /* ------------------------------ */
 /* ANIMATION EFFECTS              */
 /* ------------------------------ */
-
-/* Fade-in when page loads */
 .fade-in {
   animation: fadeIn 2s ease-in;
 }
@@ -120,29 +82,16 @@ p {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Floating gentle motion for images */
 .character {
-  width: 220px;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.6));
-  margin: 20px;
+  width: 240px;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.7));
+  margin: 30px 0;
   animation: float 5s ease-in-out infinite;
 }
 
-.background-art {
-  width: 500px;
-  opacity: 0.7;
-  animation: slowfade 12s infinite alternate;
-}
-
-/* Animations for objects */
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes slowfade {
-  0% { opacity: 0.5; }
-  100% { opacity: 0.8; }
+  50% { transform: translateY(-12px); }
 }
 
 /* Title glow animation */
