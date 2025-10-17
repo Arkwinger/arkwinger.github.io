@@ -24,10 +24,7 @@
     }
 
     .character {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      position: relative;
       width: 240px;
       opacity: 0;
       filter: brightness(0.6) drop-shadow(0 0 20px rgba(255,255,255,0.25));
@@ -40,18 +37,18 @@
       to { opacity: 1; }
     }
 
-    /* 💬 Shiro bubble */
+    /* 💬 speech bubble directly above Shiro */
     .bubble {
       position: absolute;
-      top: 35%;
+      bottom: 100%; /* position just above Shiro */
       left: 50%;
-      transform: translateX(-50%);
-      max-width: 300px;
+      transform: translateX(-50%) translateY(-10px);
+      max-width: 280px;
       background: rgba(255, 255, 255, 0.15);
       border: 2px solid rgba(255, 182, 193, 0.6);
       border-radius: 20px;
-      padding: 12px 18px;
-      font-size: 1.1rem;
+      padding: 10px 16px;
+      font-size: 1.05rem;
       text-align: center;
       color: #fff;
       text-shadow: 0 0 5px #ffb6c1;
@@ -62,14 +59,13 @@
       z-index: 3;
     }
 
-    .bubble.show { opacity: 1; }
+    .bubble.show {
+      opacity: 1;
+    }
 
     /* input box */
     .input-box {
-      position: absolute;
-      bottom: 15%;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: 20px;
       display: none;
       flex-direction: column;
       align-items: center;
@@ -122,12 +118,16 @@
   </style>
 </head>
 <body>
-  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-  <div class="bubble" id="bubble"></div>
+  <div class="character-container">
+    <img src="shiro.png" class="character" id="shiro" alt="Shiro">
+    <div class="bubble" id="bubble"></div>
+  </div>
+
   <div class="input-box" id="inputBox">
     <input type="text" id="answer" placeholder="답을 입력하세요...">
     <button id="submitBtn">확인</button>
   </div>
+
   <div class="flash" id="flash"></div>
   <audio id="whoosh" src="whoosh.mp3" preload="auto"></audio>
 
@@ -140,8 +140,10 @@
     const flash = document.getElementById("flash");
     const whoosh = document.getElementById("whoosh");
 
-    let state = 0; // 0=quiet, 1=asked
+    let state = 0; // 0 = idle, 1 = question mode
+    let wrongCount = 0;
 
+    // 🩶 first click triggers dialogue
     shiro.addEventListener("click", () => {
       if (state === 0) {
         bubble.textContent = "시로: ...이제 나가.";
@@ -157,12 +159,14 @@
       }
     });
 
+    // 🩶 answer handling
     submitBtn.addEventListener("click", () => {
       const userAnswer = answer.value.trim().toLowerCase();
       if (userAnswer === "gyu_0227") {
         bubble.textContent = "시로: ...맞았네. 가도 돼.";
         bubble.classList.add("show");
         inputBox.style.display = "none";
+
         setTimeout(() => {
           whoosh.volume = 0.6;
           whoosh.play();
@@ -177,7 +181,14 @@
           }, 250);
         }, 2000);
       } else {
-        bubble.textContent = "시로: 틀렸어. 여기서 나가지 마.";
+        wrongCount++;
+        if (wrongCount === 1) {
+          bubble.textContent = "시로: 틀렸어. 다시 생각해.";
+        } else if (wrongCount === 2) {
+          bubble.textContent = "시로: 또 틀렸네... 진짜 몰라?";
+        } else {
+          bubble.textContent = "시로: 너, 일부러 틀리는 거야?";
+        }
         bubble.classList.add("show");
         answer.value = "";
       }
