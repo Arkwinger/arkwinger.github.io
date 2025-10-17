@@ -8,10 +8,44 @@ body {
 }
 
 /* ------------------------------ */
+/* HACKER TERMINAL STYLE           */
+/* ------------------------------ */
+.terminal {
+  background-color: #000;
+  color: #00ff00;
+  font-family: "Courier New", monospace;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  white-space: pre-line;
+}
+
+.terminal-container {
+  width: 80%;
+  max-width: 600px;
+}
+
+input {
+  background: transparent;
+  color: #00ff00;
+  border: none;
+  border-bottom: 1px solid #00ff00;
+  width: 80%;
+  font-size: 1rem;
+  outline: none;
+}
+
+#msg {
+  margin-top: 10px;
+}
+
+/* ------------------------------ */
 /* ANIME WORLD (HOME PAGE) STYLES */
 /* ------------------------------ */
 .arkworld {
-  background: url('https://raw.githubusercontent.com/arkwinger/arkwinger.github.io/main/arkworld/bg.jpg') center/cover no-repeat;
+  background: url('bg.jpg') center/cover no-repeat;
   height: 100vh;
   color: white;
   display: flex;
@@ -26,9 +60,11 @@ body {
 /* Dimmed overlay with blur */
 .overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(3px);
 }
 
@@ -78,24 +114,39 @@ p {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .character {
   width: 240px;
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.7));
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
   margin: 30px 0;
   animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 /* Title glow animation */
 @keyframes glow {
-  from { text-shadow: 0 0 15px #ffb6c1, 0 0 30px #ffb6c1; }
-  to { text-shadow: 0 0 5px #ffb6c1, 0 0 15px #ffc0cb; }
+  from {
+    text-shadow: 0 0 15px #ffb6c1, 0 0 30px #ffb6c1;
+  }
+  to {
+    text-shadow: 0 0 5px #ffb6c1, 0 0 15px #ffc0cb;
+  }
 }
