@@ -24,9 +24,10 @@
     }
 
     .overlay {
-      position: absolute; top: 0; left: 0;
+      position: absolute;
+      top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.45);
       backdrop-filter: blur(2px);
       z-index: 0;
     }
@@ -40,7 +41,7 @@
       animation: float 6s ease-in-out infinite, blink 6s infinite;
       z-index: 2;
       cursor: pointer;
-      filter: drop-shadow(0 0 12px rgba(255,255,255,0.5));
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
       transition: filter 0.4s ease;
     }
 
@@ -50,12 +51,13 @@
     }
 
     @keyframes blink {
-      0%, 92%, 100% { filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
-      95% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+      0%, 92%, 100% { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); }
+      95% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1)); }
     }
 
     .message {
-      position: absolute; top: 12%;
+      position: absolute;
+      top: 12%;
       text-align: center;
       z-index: 2;
       font-size: 1.6rem;
@@ -68,15 +70,15 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 💬 Shiro dialogue bubble */
+    /* Shiro’s speech bubble */
     .bubble {
       position: fixed;
       bottom: 58%;
       left: 50%;
       transform: translateX(-50%);
       width: 320px;
-      background: rgba(255,182,193,0.18);
-      border: 2px solid rgba(255,182,193,0.9);
+      background: rgba(255, 182, 193, 0.18);
+      border: 2px solid rgba(255, 182, 193, 0.9);
       border-radius: 20px;
       padding: 14px 20px;
       font-size: 1.2rem;
@@ -84,7 +86,7 @@
       color: #fff;
       text-shadow: 0 0 10px #fff, 0 0 25px #ffb6c1;
       backdrop-filter: blur(14px);
-      box-shadow: 0 0 25px rgba(255,182,193,0.4);
+      box-shadow: 0 0 25px rgba(255, 182, 193, 0.4);
       opacity: 0;
       z-index: 9999;
       transition: opacity 0.4s ease-in-out;
@@ -93,12 +95,11 @@
 
     .bubble.show { opacity: 1; }
 
-    /* glowing drifting particles */
     .orb {
       position: absolute;
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: rgba(255,182,193,0.6);
+      background: rgba(255, 182, 193, 0.6);
       animation: drift 18s linear infinite;
     }
 
@@ -114,7 +115,7 @@
       padding: 8px 18px;
       font-size: 0.9rem;
       border: 1px solid #ffb6c1;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0, 0, 0, 0.3);
       color: white;
       border-radius: 20px;
       cursor: pointer;
@@ -137,7 +138,7 @@
   <button class="music-btn" id="musicBtn">🎵 Play Music</button>
 
   <script>
-    // 🌸 create floating orbs
+    // 🌸 ambient particles
     for (let i = 0; i < 15; i++) {
       const orb = document.createElement("div");
       orb.className = "orb";
@@ -151,16 +152,17 @@
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
 
+    // 🩶 New balanced dialogue list
     const lines = [
       "시로: 또 왔네. 뭐, 상관은 없어.",
       "시로: 진짜 하늘 같지 않아? 이상하지.",
       "시로: 조용해서 좋은데... 네 발소리는 시끄럽다.",
       "시로: 뭐 그렇게 쳐다봐?",
-      "시로: 난 그냥 여기에 있었을 뿐이야.",
+      "시로: 넌 Ark를 찾고 있는 거야?",
+      "시로: Ark는 꽤 멋진 사람이야. 가끔 피곤하게 굴지만.",
+      "시로: 난 Ark의 보조야. 여길 관리하는 중이지.",
       "시로: 이상한 꿈 꾸고 있는 거 아니야?",
-      "시로: 그런 표정 짓지 마. 어색하니까.",
-      "시로: 네가 없어도 여긴 그대로일 거야.",
-      "시로: 다들 왜 그렇게 급할까.",
+      "시로: Ark가 널 자주 언급해. 신기하지 않아?",
       "시로: 이곳은... 아직 숨 쉬고 있어."
     ];
 
@@ -185,7 +187,7 @@
       index = (index + 1) % lines.length;
     });
 
-    // 🎵 music play
+    // 🎵 music button
     const musicBtn = document.getElementById("musicBtn");
     let musicStarted = false;
 
@@ -201,7 +203,7 @@
         musicStarted = true;
         musicBtn.textContent = "⏸️ Music Playing";
       } else {
-        alert("음악은 계속 흐르고 있어...");
+        alert("시로: 음악은 계속 흐르고 있어...");
       }
     });
   </script>
