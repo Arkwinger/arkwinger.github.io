@@ -24,42 +24,43 @@
     }
 
     .overlay {
-      position: absolute;
-      top: 0; left: 0;
+      position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.45);
       backdrop-filter: blur(2px);
       z-index: 0;
     }
 
-    /* 🩵 Shiro floating center */
     .character {
       position: absolute;
-      top: 45%;
+      top: 48%;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 220px;
-      animation: float 6s ease-in-out infinite;
+      animation: float 6s ease-in-out infinite, blink 6s infinite;
       z-index: 2;
       cursor: pointer;
-      filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
+      filter: drop-shadow(0 0 12px rgba(255,255,255,0.5));
+      transition: filter 0.4s ease;
     }
 
     @keyframes float {
       0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-      50% { transform: translate(-50%, -50%) translateY(-10px); }
+      50% { transform: translate(-50%, -50%) translateY(-8px); }
     }
 
-    /* 🌙 Title line */
+    @keyframes blink {
+      0%, 92%, 100% { filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+      95% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+    }
+
     .message {
-      position: absolute;
-      top: 12%;
+      position: absolute; top: 12%;
       text-align: center;
       z-index: 2;
       font-size: 1.6rem;
       text-shadow: 0 0 10px #ffb6c1;
       animation: fadeIn 2s ease-in;
-      opacity: 0.95;
     }
 
     @keyframes fadeIn {
@@ -67,92 +68,76 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ✨ Dream Orbs */
+    /* 💬 Shiro dialogue bubble */
+    .bubble {
+      position: fixed;
+      bottom: 58%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      background: rgba(255,182,193,0.18);
+      border: 2px solid rgba(255,182,193,0.9);
+      border-radius: 20px;
+      padding: 14px 20px;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 10px #fff, 0 0 25px #ffb6c1;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 25px rgba(255,182,193,0.4);
+      opacity: 0;
+      z-index: 9999;
+      transition: opacity 0.4s ease-in-out;
+      pointer-events: none;
+    }
+
+    .bubble.show { opacity: 1; }
+
+    /* glowing drifting particles */
     .orb {
       position: absolute;
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: rgba(255,182,193,0.7);
-      animation: drift 20s linear infinite;
+      background: rgba(255,182,193,0.6);
+      animation: drift 18s linear infinite;
     }
 
     @keyframes drift {
-      0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+      0% { transform: translateY(0) translateX(0); opacity: 1; }
       100% { transform: translateY(-110vh) translateX(30vw); opacity: 0; }
     }
 
-    /* 💬 Speech bubble */
-    .bubble {
+    .music-btn {
       position: absolute;
-      top: 30%;
-      left: 50%;
-      transform: translateX(-50%);
-      max-width: 300px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 2px solid rgba(255, 182, 193, 0.6);
+      bottom: 6%;
+      right: 6%;
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      border: 1px solid #ffb6c1;
+      background: rgba(0,0,0,0.3);
+      color: white;
       border-radius: 20px;
-      padding: 12px 18px;
-      font-size: 1.1rem;
-      text-align: center;
-      color: #fff;
-      text-shadow: 0 0 5px #ffb6c1;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
-      backdrop-filter: blur(8px);
-      z-index: 3;
-    }
-
-    .bubble.show {
-      opacity: 1;
-    }
-
-    /* 🎧 Music button */
-    #music-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 25px;
-      background: rgba(255, 182, 193, 0.2);
-      border: 2px solid #ffb6c1;
-      color: #fff;
-      font-size: 1.4rem;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 12px #ffb6c1;
       cursor: pointer;
-      transition: all 0.3s ease;
-      z-index: 5;
+      z-index: 999;
       backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
     }
 
-    #music-btn.playing {
+    .music-btn:hover {
       background: #ffb6c1;
-      color: #000;
-      box-shadow: 0 0 20px #ffb6c1;
-    }
-
-    #music-btn:hover {
-      transform: scale(1.1);
+      color: black;
     }
   </style>
 </head>
 <body class="arkworld">
   <div class="overlay"></div>
-
-  <!-- Title line -->
-  <div class="message">여긴... 아무 일도 일어나지 않는 곳이야.</div>
-
+  <div class="message">🌸 Arkwinger’s World 🌙</div>
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="bubble" id="bubble"></div>
-
-  <button id="music-btn">🎧</button>
+  <button class="music-btn" id="musicBtn">🎵 Play Music</button>
 
   <script>
-    // ✨ Floating Orbs
+    // 🌸 create floating orbs
     for (let i = 0; i < 15; i++) {
       const orb = document.createElement("div");
       orb.className = "orb";
@@ -163,58 +148,60 @@
       document.body.appendChild(orb);
     }
 
-    // 💬 Shiro dialogue + secret click counter
-    const shiroLines = [
-      "시로: 또 왔네. 뭐, 상관은 없어.",
-      "시로: 진짜 하늘 같지 않아. 이상하지?",
-      "시로: 조용해서 좋은데... 네 발소리는 시끄럽다.",
-      "시로: 뭐 그렇게 쳐다봐?",
-      "시로: 난 그냥 여기 있었을 뿐이야.",
-      "시로: 이상한 꿈 꾸고 있는 거 아니야?",
-      "시로: 그런 표정 하지 마. 이상해.",
-      "시로: 네가 없어도 여긴 그대로야.",
-      "시로: 다들 왜 그렇게 급할까.",
-      "시로: 그냥 앉아. 아무 일도 안 일어나."
-    ];
-
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
+
+    const lines = [
+      "시로: 또 왔네. 뭐, 상관은 없어.",
+      "시로: 진짜 하늘 같지 않아? 이상하지.",
+      "시로: 조용해서 좋은데... 네 발소리는 시끄럽다.",
+      "시로: 뭐 그렇게 쳐다봐?",
+      "시로: 난 그냥 여기에 있었을 뿐이야.",
+      "시로: 이상한 꿈 꾸고 있는 거 아니야?",
+      "시로: 그런 표정 짓지 마. 어색하니까.",
+      "시로: 네가 없어도 여긴 그대로일 거야.",
+      "시로: 다들 왜 그렇게 급할까.",
+      "시로: 이곳은... 아직 숨 쉬고 있어."
+    ];
+
     let index = 0;
-    let clicks = 0;
+
+    function showLine(text) {
+      bubble.textContent = "";
+      bubble.classList.add("show");
+      let i = 0;
+      const type = setInterval(() => {
+        bubble.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(type);
+          setTimeout(() => bubble.classList.remove("show"), 4000);
+        }
+      }, 40);
+    }
 
     shiro.addEventListener("click", () => {
-      bubble.textContent = shiroLines[index];
-      bubble.classList.add("show");
-      setTimeout(() => bubble.classList.remove("show"), 4000);
-      index = (index + 1) % shiroLines.length;
-
-      // count clicks
-      clicks++;
-      if (clicks >= 10) {
-        document.body.style.transition = "background 2s ease";
-        document.body.style.background = "black";
-        setTimeout(() => {
-          window.location.href = "darkroom.html";
-        }, 2500);
-      }
+      showLine(lines[index]);
+      index = (index + 1) % lines.length;
     });
 
-    // 🎧 Music toggle (local MP3 version)
-    const musicBtn = document.getElementById("music-btn");
-    let audio = new Audio("bgm.mp3");
-    audio.loop = true;
-    audio.volume = 0.4;
-    let playing = false;
+    // 🎵 music play
+    const musicBtn = document.getElementById("musicBtn");
+    let musicStarted = false;
 
     musicBtn.addEventListener("click", () => {
-      if (!playing) {
-        audio.play();
-        musicBtn.classList.add("playing");
-        playing = true;
+      if (!musicStarted) {
+        const iframe = document.createElement("iframe");
+        iframe.width = 0; iframe.height = 0;
+        iframe.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw";
+        iframe.allow = "autoplay";
+        iframe.style.position = "absolute";
+        iframe.style.left = "-9999px";
+        document.body.appendChild(iframe);
+        musicStarted = true;
+        musicBtn.textContent = "⏸️ Music Playing";
       } else {
-        audio.pause();
-        musicBtn.classList.remove("playing");
-        playing = false;
+        alert("음악은 계속 흐르고 있어...");
       }
     });
   </script>
