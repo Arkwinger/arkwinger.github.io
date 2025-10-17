@@ -10,7 +10,6 @@
       overflow: hidden;
       font-family: 'Noto Sans KR', sans-serif;
     }
-
     .arkworld {
       background: url('bp.jpg') center/cover no-repeat;
       height: 100vh;
@@ -20,47 +19,33 @@
       flex-direction: column;
       position: relative;
       color: #fff;
+      cursor: crosshair;
     }
-
     .overlay {
-      position: absolute;
-      top: 0; left: 0;
+      position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.5);
       backdrop-filter: blur(2px);
       z-index: 0;
     }
-
     .character {
       position: absolute;
-      bottom: 20px;
-      right: 40px;
+      bottom: 20px; right: 40px;
       width: 180px;
       animation: float 5s ease-in-out infinite;
       z-index: 2;
       cursor: pointer;
     }
-
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
+    @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
     .message {
-      position: absolute;
-      top: 15%;
+      position: absolute; top: 15%;
       text-align: center;
       z-index: 2;
       font-size: 1.6rem;
       text-shadow: 0 0 10px #ffb6c1;
       animation: fadeIn 2s ease-in;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes fadeIn {from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
     #floating-text {
       position: absolute;
       bottom: 20%;
@@ -70,19 +55,38 @@
       z-index: 2;
       color: #ffd6f6;
     }
+    .orb {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,182,193,0.7);
+      animation: drift 20s linear infinite;
+    }
+    @keyframes drift {
+      0% {transform:translateY(0) translateX(0);}
+      100% {transform:translateY(-110vh) translateX(30vw);}
+    }
   </style>
 </head>
 <body class="arkworld">
   <div class="overlay"></div>
-
   <div class="message">🌸 Welcome to Arkwinger’s World 🌙</div>
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-
   <p id="floating-text"></p>
 
-  <!-- background music (YouTube) starts when user clicks once -->
   <script>
-    // Random dream thoughts
+    // create glowing drifting orbs
+    for (let i = 0; i < 15; i++) {
+      const orb = document.createElement("div");
+      orb.className = "orb";
+      orb.style.left = Math.random() * 100 + "vw";
+      orb.style.top = Math.random() * 100 + "vh";
+      orb.style.animationDelay = Math.random() * 10 + "s";
+      orb.style.animationDuration = 15 + Math.random() * 10 + "s";
+      document.body.appendChild(orb);
+    }
+
+    // dream thoughts
     const thoughts = [
       "The skyline hums like a dream that never ends.",
       "오늘은 하늘이 예쁘네 🌤",
@@ -91,34 +95,31 @@
       "Somewhere beyond the clouds, another world awaits.",
       "이건 나만의 공간이야. 편하게 있어."
     ];
-
-    function showRandomThought() {
-      const el = document.getElementById("floating-text");
-      el.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+    const floatText = document.getElementById("floating-text");
+    function showThought() {
+      floatText.textContent = thoughts[Math.floor(Math.random()*thoughts.length)];
     }
+    window.onload = showThought;
+    document.body.addEventListener("click", showThought);
 
-    document.body.addEventListener("click", () => {
-      // start background music
-      const iframe = document.createElement("iframe");
-      iframe.width = 0;
-      iframe.height = 0;
-      iframe.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw";
-      iframe.allow = "autoplay";
-      iframe.style.position = "absolute";
-      iframe.style.left = "-9999px";
-      document.body.appendChild(iframe);
-
-      // show a random thought
-      showRandomThought();
-    }, { once: true });
-
-    // Shiro click interaction
-    document.getElementById("shiro").addEventListener("click", () => {
+    // shiro click
+    document.getElementById("shiro").addEventListener("click", ()=>{
       alert("Shiro: ‘Commander... welcome home.’ 🩵");
     });
 
-    // initial random message
-    window.onload = showRandomThought;
+    // start music when user first clicks
+    document.body.addEventListener("click", ()=>{
+      if (!window.musicStarted) {
+        const iframe = document.createElement("iframe");
+        iframe.width = 0; iframe.height = 0;
+        iframe.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw";
+        iframe.allow = "autoplay";
+        iframe.style.position = "absolute";
+        iframe.style.left = "-9999px";
+        document.body.appendChild(iframe);
+        window.musicStarted = true;
+      }
+    }, { once: true });
   </script>
 </body>
 </html>
