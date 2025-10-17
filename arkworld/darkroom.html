@@ -15,6 +15,7 @@
       justify-content: center;
       flex-direction: column;
       overflow: hidden;
+      position: relative;
       animation: fadeIn 3s ease-in;
     }
 
@@ -24,7 +25,6 @@
     }
 
     .character {
-      position: relative;
       width: 240px;
       opacity: 0;
       filter: brightness(0.6) drop-shadow(0 0 25px rgba(255,255,255,0.3));
@@ -38,44 +38,40 @@
       to { opacity: 1; }
     }
 
-    /* 💬 brighter glowing bubble above Shiro */
+    /* 💬 always visible glowing bubble above Shiro */
     .bubble {
       position: absolute;
-      bottom: 105%; /* slightly above head */
+      bottom: 55%;
       left: 50%;
-      transform: translateX(-50%) translateY(-10px);
-      max-width: 300px;
-      background: linear-gradient(145deg, rgba(255,200,220,0.3), rgba(255,255,255,0.1));
-      border: 2px solid rgba(255, 182, 193, 0.9);
-      box-shadow: 0 0 20px rgba(255,182,193,0.5), 0 0 40px rgba(255,182,193,0.25);
-      border-radius: 20px;
+      transform: translateX(-50%);
+      max-width: 320px;
+      background: rgba(255, 182, 193, 0.15);
+      border: 2px solid rgba(255, 182, 193, 0.8);
+      border-radius: 18px;
       padding: 14px 20px;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       text-align: center;
       color: #fff;
-      text-shadow: 0 0 8px #ffffff, 0 0 14px #ffb6c1;
+      text-shadow: 0 0 8px #fff, 0 0 18px #ffb6c1, 0 0 35px #ffb6c1;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
-      backdrop-filter: blur(10px);
-      z-index: 3;
+      transition: opacity 0.5s ease-in-out;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(255,182,193,0.4);
+      z-index: 10; /* ensure it’s on top of everything */
     }
 
-    .bubble.show {
-      opacity: 1;
-    }
+    .bubble.show { opacity: 1; }
 
-    .talking {
-      filter: brightness(0.9) drop-shadow(0 0 35px rgba(255,182,193,0.6));
-    }
-
-    /* input box */
+    /* Input */
     .input-box {
-      margin-top: 20px;
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
       display: none;
       flex-direction: column;
       align-items: center;
-      z-index: 4;
+      z-index: 12;
     }
 
     .input-box input {
@@ -92,7 +88,7 @@
     }
 
     .input-box input:focus {
-      box-shadow: 0 0 12px #ffb6c1;
+      box-shadow: 0 0 10px #ffb6c1;
     }
 
     .input-box button {
@@ -100,7 +96,7 @@
       padding: 6px 16px;
       border: 1px solid #ffb6c1;
       border-radius: 12px;
-      background: rgba(255, 182, 193, 0.25);
+      background: rgba(255, 182, 193, 0.3);
       color: white;
       cursor: pointer;
       transition: 0.3s;
@@ -119,15 +115,17 @@
       background: white;
       opacity: 0;
       pointer-events: none;
-      z-index: 10;
+      z-index: 20;
+    }
+
+    .talking {
+      filter: brightness(0.9) drop-shadow(0 0 40px rgba(255,182,193,0.7));
     }
   </style>
 </head>
 <body>
-  <div class="character-container">
-    <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-    <div class="bubble" id="bubble"></div>
-  </div>
+  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
+  <div class="bubble" id="bubble"> </div>
 
   <div class="input-box" id="inputBox">
     <input type="text" id="answer" placeholder="답을 입력하세요...">
@@ -149,33 +147,33 @@
     let state = 0;
     let wrongCount = 0;
 
+    // 🌸 first click dialogue sequence
     shiro.addEventListener("click", () => {
       if (state === 0) {
-        bubble.textContent = "시로: ...이제 나가.";
-        bubble.classList.add("show");
+        showLine("시로: ...이제 나가.");
         shiro.classList.add("talking");
+
         setTimeout(() => {
-          shiro.classList.remove("talking");
-          bubble.textContent = "시로: 그럼... 넌 진짜 Ark를 알고 있어?";
-          shiro.classList.add("talking");
+          showLine("시로: 그럼... 넌 진짜 Ark를 알고 있어?");
           setTimeout(() => {
-            bubble.textContent = "시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?";
-            shiro.classList.add("talking");
+            showLine("시로: Ark의 제일 좋아하는 한국 스트리머는 누구야?");
             inputBox.style.display = "flex";
-          }, 2000);
+          }, 2500);
         }, 3000);
+
         state = 1;
       }
     });
 
+    // 🌸 handle answers
     submitBtn.addEventListener("click", () => {
       const userAnswer = answer.value.trim().toLowerCase();
       shiro.classList.add("talking");
 
       if (userAnswer === "gyu_0227") {
-        bubble.textContent = "시로: ...맞았네. 가도 돼.";
-        bubble.classList.add("show");
+        showLine("시로: ...맞았네. 가도 돼.");
         inputBox.style.display = "none";
+
         setTimeout(() => {
           whoosh.volume = 0.6;
           whoosh.play();
@@ -192,16 +190,23 @@
       } else {
         wrongCount++;
         if (wrongCount === 1) {
-          bubble.textContent = "시로: 틀렸어. 다시 생각해.";
+          showLine("시로: 틀렸어. 다시 생각해.");
         } else if (wrongCount === 2) {
-          bubble.textContent = "시로: 또 틀렸네... 진짜 몰라?";
+          showLine("시로: 또 틀렸네... 진짜 몰라?");
         } else {
-          bubble.textContent = "시로: 너, 일부러 틀리는 거야?";
+          showLine("시로: 너, 일부러 틀리는 거야?");
         }
-        bubble.classList.add("show");
         answer.value = "";
       }
     });
+
+    function showLine(text) {
+      bubble.textContent = text;
+      bubble.classList.add("show");
+      setTimeout(() => {
+        bubble.classList.remove("show");
+      }, 4000);
+    }
   </script>
 </body>
 </html>
