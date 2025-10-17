@@ -2,25 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Arkwinger’s World 🌸</title>
+  <title>🌙 Arkwinger’s World</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .arkworld {
+      background: url('bp.jpg') center/cover no-repeat;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      color: #fff;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(2px);
+      z-index: 0;
+    }
+
+    .character {
+      position: absolute;
+      bottom: 20px;
+      right: 40px;
+      width: 180px;
+      animation: float 5s ease-in-out infinite;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .message {
+      position: absolute;
+      top: 15%;
+      text-align: center;
+      z-index: 2;
+      font-size: 1.6rem;
+      text-shadow: 0 0 10px #ffb6c1;
+      animation: fadeIn 2s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #floating-text {
+      position: absolute;
+      bottom: 20%;
+      text-align: center;
+      font-size: 1.2rem;
+      opacity: 0.9;
+      z-index: 2;
+      color: #ffd6f6;
+    }
+  </style>
 </head>
 <body class="arkworld">
   <div class="overlay"></div>
 
-  <div class="content fade-in">
-    <h1>🌸 Arkwinger’s World 🌙</h1>
-    <p>여기는 나만의 해피 플레이스야.</p>
-    <p>편하게 쉬어가도 돼.</p>
+  <div class="message">🌸 Welcome to Arkwinger’s World 🌙</div>
+  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
 
-    <img src="shiro.png" alt="Shiro" class="character">
+  <p id="floating-text"></p>
 
-    <div class="buttons">
-      <a href="../index.html">Main Terminal</a>
-      <a href="#">Memories</a>
-      <a href="#">Dream Logs</a>
-    </div>
-  </div>
+  <!-- background music (YouTube) starts when user clicks once -->
+  <script>
+    // Random dream thoughts
+    const thoughts = [
+      "The skyline hums like a dream that never ends.",
+      "오늘은 하늘이 예쁘네 🌤",
+      "You remember things differently here.",
+      "빛이 너를 부른다 — follow it.",
+      "Somewhere beyond the clouds, another world awaits.",
+      "이건 나만의 공간이야. 편하게 있어."
+    ];
 
-  <audio src="bgm.mp3" autoplay loop></audio>
+    function showRandomThought() {
+      const el = document.getElementById("floating-text");
+      el.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+    }
+
+    document.body.addEventListener("click", () => {
+      // start background music
+      const iframe = document.createElement("iframe");
+      iframe.width = 0;
+      iframe.height = 0;
+      iframe.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw";
+      iframe.allow = "autoplay";
+      iframe.style.position = "absolute";
+      iframe.style.left = "-9999px";
+      document.body.appendChild(iframe);
+
+      // show a random thought
+      showRandomThought();
+    }, { once: true });
+
+    // Shiro click interaction
+    document.getElementById("shiro").addEventListener("click", () => {
+      alert("Shiro: ‘Commander... welcome home.’ 🩵");
+    });
+
+    // initial random message
+    window.onload = showRandomThought;
+  </script>
 </body>
+</html>
