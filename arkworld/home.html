@@ -50,6 +50,7 @@
       50% { transform: translate(-50%, -50%) translateY(-10px); }
     }
 
+    /* 🌙 World title */
     .message {
       position: absolute;
       top: 12%;
@@ -58,21 +59,12 @@
       font-size: 1.6rem;
       text-shadow: 0 0 10px #ffb6c1;
       animation: fadeIn 2s ease-in;
+      opacity: 0.95;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    #floating-text {
-      position: absolute;
-      bottom: 18%;
-      text-align: center;
-      font-size: 1.2rem;
-      opacity: 0.9;
-      z-index: 2;
-      color: #ffd6f6;
     }
 
     /* ✨ Dream Orbs */
@@ -150,11 +142,12 @@
 </head>
 <body class="arkworld">
   <div class="overlay"></div>
-  <div class="message">🌸 아크윙거의 세계에 오신 걸 환영합니다 🌙</div>
+
+  <!-- Title text (changed) -->
+  <div class="message">여긴... 아무 일도 일어나지 않는 곳이야.</div>
 
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
   <div class="bubble" id="bubble"></div>
-  <p id="floating-text"></p>
 
   <button id="music-btn">🎧</button>
 
@@ -170,25 +163,7 @@
       document.body.appendChild(orb);
     }
 
-    // 🌙 Dream quotes
-    const thoughts = [
-      "오늘은 하늘이 유난히 조용하네.",
-      "이 바람, 기분 좋지 않아?",
-      "여긴... 네가 편히 쉴 수 있는 곳이야.",
-      "괜찮아, 그냥 나랑 잠깐 머물러 있어.",
-      "가끔은 아무것도 안 해도 괜찮아.",
-      "달빛이 참 예쁘다, 그렇지?",
-      "네가 여기 와서 다행이야."
-    ];
-
-    const floatText = document.getElementById("floating-text");
-    function showThought() {
-      floatText.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
-    }
-    window.onload = showThought;
-    document.body.addEventListener("click", showThought);
-
-    // 💬 Shiro dialogue (aloof / grounded tone)
+    // 💬 Shiro dialogue (nonchalant tone)
     const shiroLines = [
       "시로: 또 왔네. 뭐, 상관은 없어.",
       "시로: 진짜 하늘 같지 않아. 이상하지?",
@@ -213,25 +188,20 @@
       index = (index + 1) % shiroLines.length;
     });
 
-    // 🎧 Music toggle button
+    // 🎧 Music toggle (local MP3 preferred)
     const musicBtn = document.getElementById("music-btn");
-    let musicFrame = null;
+    let audio = new Audio("bgm.mp3");
+    audio.loop = true;
+    audio.volume = 0.4;
     let playing = false;
 
     musicBtn.addEventListener("click", () => {
       if (!playing) {
-        musicFrame = document.createElement("iframe");
-        musicFrame.width = 0;
-        musicFrame.height = 0;
-        musicFrame.src = "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw&mute=0";
-        musicFrame.allow = "autoplay";
-        musicFrame.style.position = "absolute";
-        musicFrame.style.left = "-9999px";
-        document.body.appendChild(musicFrame);
+        audio.play();
         musicBtn.classList.add("playing");
         playing = true;
       } else {
-        if (musicFrame) musicFrame.remove();
+        audio.pause();
         musicBtn.classList.remove("playing");
         playing = false;
       }
