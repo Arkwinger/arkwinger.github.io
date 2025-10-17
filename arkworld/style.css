@@ -12,7 +12,6 @@ body {
 /* ------------------------------ */
 .arkworld {
   background: url('https://raw.githubusercontent.com/arkwinger/arkwinger.github.io/main/arkworld/bg.jpg') center/cover no-repeat;
-}
   height: 100vh;
   color: white;
   display: flex;
