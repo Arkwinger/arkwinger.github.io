@@ -21,18 +21,19 @@
       position: absolute; inset: 0;
       background: rgba(0,0,0,0.45);
       backdrop-filter: blur(2px);
+      z-index: 0;
     }
 
     .character {
       position: absolute;
-      top: 48%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 230px;
       z-index: 5;
-      animation: float 6s ease-in-out infinite, blink 7s infinite;
+      animation: float 6s ease-in-out infinite, blink 8s infinite;
       cursor: pointer;
-      filter: drop-shadow(0 0 12px rgba(255,255,255,0.4));
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
     }
 
     @keyframes float {
@@ -50,7 +51,7 @@
       top: 25%;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.5);
       border-radius: 15px;
       padding: 12px 20px;
@@ -61,7 +62,9 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       z-index: 10;
+      min-width: 200px;
     }
+
     .bubble.show { opacity: 1; }
 
     .music-btn {
@@ -82,64 +85,12 @@
       animation: fadeToBlack 2s forwards;
     }
     @keyframes fadeToBlack {
-      to { background-color: black; opacity: 0; }
+      from { opacity: 1; }
+      to { opacity: 0; background: black; }
     }
   </style>
 </head>
 <body>
   <div class="overlay"></div>
-  <img src="shiro.png" class="character" id="shiro" alt="Shiro">
-  <div class="bubble" id="bubble"></div>
-  <button id="musicBtn" class="music-btn">🎵 Play Music</button>
-  <audio id="bgm" src="bgm.mp3" loop></audio>
 
-  <script>
-    const shiro = document.getElementById("shiro");
-    const bubble = document.getElementById("bubble");
-    const bgm = document.getElementById("bgm");
-    const musicBtn = document.getElementById("musicBtn");
-    let clicks = 0;
-    let index = 0;
-
-    const shiroLines = [
-      "시로: 또 왔네. 뭐, 상관은 없어.",
-      "시로: 아크 찾고 있어?",
-      "시로: 아크는 바보 같지만 멋있어.",
-      "시로: 사람들은 복잡해. 난 계산이 더 좋아.",
-      "시로: 나한테 말 거는 이유는 뭐야?",
-      "시로: 아크는 지금도 뭔가 만들고 있을걸.",
-      "시로: 여기선 시간도 멈춰있어.",
-      "시로: 아크는 정말 대단해.",
-      "시로: 조용하네... 좋아.",
-      "시로: ...너 너무 많이 눌렀어."
-    ];
-
-    function showBubble(line) {
-      bubble.textContent = "";
-      bubble.classList.add("show");
-      let i = 0;
-      const typer = setInterval(() => {
-        bubble.textContent += line[i];
-        i++;
-        if (i >= line.length) clearInterval(typer);
-      }, 40);
-      setTimeout(() => bubble.classList.remove("show"), 4000);
-    }
-
-    shiro.addEventListener("click", () => {
-      showBubble(shiroLines[index]);
-      index = (index + 1) % shiroLines.length;
-      clicks++;
-      if (clicks === 10) {
-        document.body.classList.add("fadeout");
-        setTimeout(() => window.location.href = "darkroom.html", 2000);
-      }
-    });
-
-    musicBtn.addEventListener("click", () => {
-      if (bgm.paused) { bgm.play(); musicBtn.textContent = "⏸ 음악 재생 중"; }
-      else { bgm.pause(); musicBtn.textContent = "🎵 음악 재생"; }
-    });
-  </script>
-</body>
-</html>
+  <img src="shiro.png" id="shiro" class="character" alt="Shiro">
