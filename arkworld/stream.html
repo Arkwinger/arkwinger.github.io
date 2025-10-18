@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shiro’s Secret Stream</title>
+  <title>🌙 Shiro’s Secret Stream</title>
   <style>
     body {
-      background: radial-gradient(circle at center, #0d0d0d 0%, #000 80%);
+      margin: 0;
+      background: radial-gradient(circle at center, #0a0a0a 0%, #000 90%);
       color: #b8faff;
       display: flex;
       flex-direction: column;
@@ -14,36 +15,107 @@
       height: 100vh;
       font-family: 'Noto Sans KR', sans-serif;
       overflow: hidden;
+      animation: fadeIn 3s ease forwards;
     }
+
     h1 {
       font-weight: 400;
-      text-shadow: 0 0 15px #5ef3ff;
-      animation: fadeIn 2s ease forwards;
+      text-shadow: 0 0 15px #4feeff, 0 0 25px #2bc4ff;
+      animation: glowPulse 4s infinite alternate;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
     }
+
     iframe {
       width: 720px;
       height: 405px;
       border: none;
       border-radius: 15px;
-      margin-top: 20px;
-      box-shadow: 0 0 30px #1ee5ff60;
-      animation: fadeIn 3s ease forwards;
+      box-shadow: 0 0 30px rgba(46, 228, 255, 0.4), 0 0 60px rgba(100, 255, 255, 0.2);
+      animation: fadeIn 4s ease forwards;
     }
+
     .msg {
-      margin-top: 30px;
-      opacity: 0.8;
+      margin-top: 25px;
       font-size: 1rem;
-      animation: fadeIn 3.5s ease forwards;
+      opacity: 0.8;
+      color: #d1f9ff;
+      animation: textAppear 3s ease forwards;
     }
+
+    .shiro {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      width: 180px;
+      opacity: 0.95;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+    }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
+      from { opacity: 0; background-color: #000; }
+      to { opacity: 1; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 10px #45e0ff, 0 0 20px #00c2ff; }
+      to { text-shadow: 0 0 25px #7afaff, 0 0 40px #a2faff; }
+    }
+
+    @keyframes textAppear {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      margin-top: 30px;
+      background: transparent;
+      color: #88f1ff;
+      border: 1px solid #88f1ff;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.3s;
+      text-shadow: 0 0 5px #b8faff;
+    }
+
+    button:hover {
+      background: #88f1ff15;
+      box-shadow: 0 0 10px #5ef3ff;
     }
   </style>
 </head>
 <body>
-  <h1>🌙 Welcome to Gyu_0227’s Secret Stream</h1>
-  <iframe src="https://www.youtube.com/embed/live_stream?channel=UCBaIFJSQ6IsrJ0yEt-B6twg&autoplay=1" allow="autoplay; encrypted-media"></iframe>
-  <p class="msg">Shiro: “Don’t tell Ark I showed you this.”</p>
+  <h1>🌌 Welcome to Gyu_0227’s Secret Stream</h1>
+
+  <!-- YouTube Stream -->
+  <iframe
+    src="https://www.youtube.com/embed/NyA-3G8VKAc?autoplay=1&loop=1&playlist=NyA-3G8VKAc"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+
+  <p class="msg">Shiro: “Ark told me not to show anyone this... but you’re already here.”</p>
+
+  <img src="shiro.png" class="shiro" alt="Shiro">
+
+  <button onclick="goHome()">Return to Ark World</button>
+
+  <script>
+    function goHome() {
+      document.body.style.transition = "opacity 2s ease";
+      document.body.style.opacity = "0";
+      setTimeout(() => {
+        window.location.href = "./home.html";
+      }, 2000);
+    }
+  </script>
 </body>
 </html>
