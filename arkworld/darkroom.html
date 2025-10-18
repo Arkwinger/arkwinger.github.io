@@ -39,7 +39,7 @@
       text-align: center;
       opacity: 0;
       color: #e5e5e5;
-      transition: opacity 1s ease;
+      transition: opacity 2s ease;
     }
 
     .bubble.show {
@@ -96,7 +96,8 @@
     function showLine(text) {
       bubble.textContent = text;
       bubble.classList.add("show");
-      setTimeout(() => bubble.classList.remove("show"), 4000);
+      // stays visible for ~7.5 seconds before fading
+      setTimeout(() => bubble.classList.remove("show"), 7500);
     }
 
     // click handler
