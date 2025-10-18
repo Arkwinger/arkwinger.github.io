@@ -1,81 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arkwinger Projects</title>
+  <meta charset="UTF-8">
+  <title>Arkwinger Terminal</title>
   <style>
     body {
-      background: #0b0c10;
-      color: #e5e5e5;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      line-height: 1.6;
+      background: black;
+      color: #00ff88;
+      font-family: "Courier New", monospace;
+      padding: 40px;
+      overflow: hidden;
     }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 35px;
-      color: #bbaaff;
-      letter-spacing: 1px;
+    #terminal {
+      white-space: pre-wrap;
+      line-height: 1.4;
     }
-
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      align-items: center;
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background: #00ff88;
+      animation: blink 1s infinite;
+      margin-left: 3px;
     }
-
-    a {
-      display: block;
+    @keyframes blink { 0%,50%{opacity:1;} 51%,100%{opacity:0;} }
+    input {
+      background: transparent;
+      border: none;
+      color: #00ff88;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
       width: 250px;
-      padding: 12px 20px;
-      background: #14161c;
-      color: #e5e5e5;
-      border: 1px solid #383a44;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: 0.25s ease;
-      font-size: 0.95rem;
     }
-
-    a:hover {
-      background: #1e212a;
-      border-color: #9f7aea;
-      color: #d6caff;
-      transform: translateY(-2px);
-    }
-
-    p {
-      color: #888;
-      margin-top: 40px;
-      font-size: 0.85rem;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.8rem;
-      color: #555;
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
     }
   </style>
 </head>
 <body>
-  <h1>Arkwinger Projects</h1>
-
-  <div class="links">
-    <a href="arkworld/home.html">🌙 Enter Arkwinger’s World</a>
-    <a href="playground.html">💻 CTF Playground</a>
-    <a href="korean-vocab.html">🧠 Korean Vocabulary Quiz</a>
+  <div id="terminal">
+    Initializing Arkwinger Access Node...  
+    [OK] System Integrity: Verified  
+    [OK] Quantum Session: Stable  
+    -------------------------------------------  
+    Access key required to enter Arkwinger’s World.  
+    <br><br>
+    Enter password: <input type="password" id="pass"><span class="cursor"></span>
   </div>
+  <div id="overlay"></div>
 
-  <p>Simple static spaces — click a section to explore.</p>
-  <footer>Maintained by Arkwinger • GitHub Pages</footer>
+  <script>
+    const pass = document.getElementById("pass");
+    const overlay = document.getElementById("overlay");
+
+    pass.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        if (pass.value.trim().toLowerCase() === "shiro") {
+          document.body.insertAdjacentHTML('beforeend', "<br>[ACCESS GRANTED] Welcome back, Arkwinger...");
+          setTimeout(() => {
+            overlay.style.opacity = "1";
+            setTimeout(() => window.location.href = "./arkworld/home.html", 1200);
+          }, 1000);
+        } else {
+          document.body.insertAdjacentHTML('beforeend', "<br>[DENIED] Invalid key.");
+          pass.value = "";
+        }
+      }
+    });
+  </script>
 </body>
 </html>
