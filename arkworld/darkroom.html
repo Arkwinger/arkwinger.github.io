@@ -75,68 +75,67 @@
     const bubble = document.getElementById("bubble");
     const input = document.getElementById("answer");
 
-    let phase = 0;
-    const preQuestions = [
-      "You shouldn’t be here.",
-      "How did you even get in?",
-      "Fine... since you’re here.",
-      "Answer me something first.",
-      "What do you think Ark is doing right now?",
-      "Hmph... doesn’t matter anyway.",
-      "One more question."
+    let questionIndex = 0;
+    const questions = [
+      { text: "Why did you come here?", ignoreAnswer: true },
+      { text: "Do you think Ark would approve of this?", ignoreAnswer: true },
+      { text: "Then tell me... Ark’s favorite Korean streamer?", ignoreAnswer: false }
     ];
 
-    // typewriter effect
-    function say(text, delay = 3000) {
-      bubble.textContent = "";
-      let i = 0;
+    function showText(text) {
       bubble.classList.add("show");
-      const typer = setInterval(() => {
-        bubble.textContent += text.charAt(i);
-        i++;
-        if (i >= text.length) {
-          clearInterval(typer);
-        }
-      }, 30);
-      setTimeout(() => bubble.classList.remove("show"), delay);
+      bubble.textContent = text;
     }
 
-    function askStreamer() {
-      bubble.classList.add("show");
-      bubble.textContent = "Then tell me... Ark’s favorite Korean streamer?";
-      input.style.display = "block";
-      input.focus();
+    function hideText(delay = 2500) {
+      setTimeout(() => {
+        bubble.classList.remove("show");
+      }, delay);
     }
 
-    // progression
+    function askNext() {
+      if (questionIndex < questions.length) {
+        const q = questions[questionIndex];
+        showText(q.text);
+        input.style.display = "block";
+        input.value = "";
+        input.focus();
+      }
+    }
+
     shiro.addEventListener("click", () => {
-      if (phase < preQuestions.length) {
-        say(preQuestions[phase]);
-        phase++;
-      } else if (phase === preQuestions.length) {
-        askStreamer();
-        phase++;
+      if (questionIndex === 0) {
+        askNext();
       }
     });
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         const val = input.value.trim().toLowerCase();
-        if (val === "gyu_0227") {
-          bubble.textContent = "Heh... you actually knew that.";
-          input.style.display = "none";
-          setTimeout(() => {
-            bubble.textContent = "Come with me.";
-          }, 1800);
-          setTimeout(() => {
-            document.body.style.opacity = "0";
-            setTimeout(() => {
-              window.location.href = "./stream.html";
-            }, 2000);
-          }, 3800);
+        const q = questions[questionIndex];
+
+        if (q.ignoreAnswer) {
+          showText("...doesn’t matter.");
+          hideText();
+          questionIndex++;
+          setTimeout(askNext, 3000);
         } else {
-          bubble.textContent = "Wrong. Try again.";
-          input.value = "";
+          if (val === "gyu_0227") {
+            showText("Heh... you actually knew that.");
+            input.style.display = "none";
+            setTimeout(() => {
+              bubble.textContent = "Come with me.";
+            }, 1800);
+            setTimeout(() => {
+              document.body.style.opacity = "0";
+              setTimeout(() => {
+                window.location.href = "./stream.html";
+              }, 2000);
+            }, 3800);
+          } else {
+            showText("Wrong. Try again.");
+            input.value = "";
+          }
         }
       }
     });
