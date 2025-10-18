@@ -1,69 +1,131 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Dark Room</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
       background: black;
+      color: #cfcfcf;
+      font-family: 'Noto Sans KR', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-family: 'Noto Sans KR', sans-serif;
+      height: 100vh;
       overflow: hidden;
     }
-    #shiro {
-      width: 230px;
+
+    img {
+      width: 220px;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
       animation: float 6s ease-in-out infinite;
-      cursor: pointer;
     }
-    @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-    #bubble {
-      margin-top: 20px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 15px;
-      padding: 10px 20px;
-      text-shadow: 0 0 8px #aefcff;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      max-width: 80%;
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .bubble {
+      margin-top: 25px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1.1rem;
+      max-width: 70%;
       text-align: center;
+      opacity: 0;
+      color: #e5e5e5;
+      transition: opacity 1s ease;
     }
-    #bubble.show { opacity: 1; }
+
+    .bubble.show {
+      opacity: 1;
+    }
+
+    #inputBox {
+      margin-top: 20px;
+      display: none;
+    }
+
+    input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #aaa;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      text-align: center;
+      padding: 6px;
+      width: 220px;
+    }
   </style>
 </head>
 <body>
-  <img id="shiro" src="shiro.png" alt="Shiro">
-  <div id="bubble"></div>
+  <img src="shiro.png" id="shiro" alt="Shiro">
+  <div id="bubble" class="bubble"></div>
+
+  <div id="inputBox">
+    <input type="text" id="answer" placeholder="여기에 입력하세요..." autocomplete="off">
+  </div>
 
   <script>
     const shiro = document.getElementById("shiro");
     const bubble = document.getElementById("bubble");
-    let stage = 0;
+    const inputBox = document.getElementById("inputBox");
+    const answer = document.getElementById("answer");
 
-    function showText(text) {
-      bubble.textContent = "";
+    const idleLines = [
+      "또 왔네.",
+      "여긴 네가 있을 곳이 아니야.",
+      "대답해봤자 달라질 건 없어.",
+      "넌 왜 계속 돌아오는 거야?",
+      "내가 그걸 알아야 해?",
+      "흥, 관심 없어."
+    ];
+
+    const streamerQuestion = "아크가 제일 좋아하는 한국 스트리머는 누구지?";
+    const correctAnswer = "gyu_0227";
+    let stage = 0;
+    let questionAsked = false;
+
+    function showLine(text) {
+      bubble.textContent = text;
       bubble.classList.add("show");
-      let i = 0;
-      const typer = setInterval(() => {
-        bubble.textContent += text[i];
-        i++;
-        if (i >= text.length) clearInterval(typer);
-      }, 40);
+      setTimeout(() => bubble.classList.remove("show"), 4000);
     }
 
+    // click handler
     shiro.addEventListener("click", () => {
-      if (stage === 0) {
-        showText("시로: ...이제 나가.");
-        stage++;
-      } else if (stage === 1) {
-        showText("시로: 진짜로. 나가.");
-        setTimeout(() => window.location.href = "home.html", 3000);
+      if (!questionAsked) {
+        if (stage < 3) {
+          showLine(idleLines[Math.floor(Math.random() * idleLines.length)]);
+          stage++;
+        } else {
+          showLine(streamerQuestion);
+          inputBox.style.display = "block";
+          questionAsked = true;
+          answer.focus();
+        }
+      }
+    });
+
+    answer.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        const val = answer.value.trim().toLowerCase();
+        if (val === correctAnswer) {
+          showLine("...맞았네. 나가도 좋아.");
+          setTimeout(() => {
+            window.location.href = "home.html";
+          }, 3000);
+        } else {
+          showLine("틀렸어. 하지만 뭐... 상관없어.");
+          answer.value = "";
+        }
       }
     });
   </script>
