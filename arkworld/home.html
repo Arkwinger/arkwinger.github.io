@@ -128,4 +128,70 @@
   <script>
     // 🌸 Orbs floating around
     for (let i = 0; i < 15; i++) {
-      const orb = document.crea
+      const orb = document.createElement("div");
+      orb.className = "orb";
+      orb.style.left = Math.random() * 100 + "vw";
+      orb.style.top = Math.random() * 100 + "vh";
+      orb.style.animationDelay = Math.random() * 10 + "s";
+      orb.style.animationDuration = 15 + Math.random() * 10 + "s";
+      document.body.appendChild(orb);
+    }
+
+    // 💬 Shiro dialogue + secret click counter
+    const shiroLines = [
+      "시로: 또 왔네. 뭐, 상관은 없어.",
+      "시로: 진짜 하늘 같지 않아. 이상하지?",
+      "시로: 조용해서 좋은데... 네 발소리는 시끄럽다.",
+      "시로: 뭐 그렇게 쳐다봐?",
+      "시로: 난 그냥 여기 있었을 뿐이야.",
+      "시로: 이상한 꿈 꾸고 있는 거 아니야?",
+      "시로: 그런 표정 하지 마. 이상해.",
+      "시로: 네가 없어도 여긴 그대로야.",
+      "시로: 아크 말이야? 그는 바보 같지만... 똑똑해.",
+      "시로: 아크는 이상한 인간이야. 근데 나쁘진 않아.",
+      "시로: 넌 아크를 찾고 있는 거지?",
+      "시로: 아크... 또 잤겠지.",
+      "시로: 아크가 만든 이 세계, 좀 괜찮네."
+    ];
+
+    const shiro = document.getElementById("shiro");
+    const bubble = document.getElementById("bubble");
+    let index = 0;
+    let clicks = 0;
+
+    shiro.addEventListener("click", () => {
+      bubble.textContent = shiroLines[index];
+      bubble.classList.add("show");
+      setTimeout(() => bubble.classList.remove("show"), 4000);
+      index = (index + 1) % shiroLines.length;
+
+      clicks++;
+      if (clicks >= 10) {
+        document.body.style.transition = "background 2s ease";
+        document.body.style.background = "black";
+        setTimeout(() => {
+          window.location.href = "darkroom.html";
+        }, 2500);
+      }
+    });
+
+    // 🎵 YouTube Music Embed (manual play)
+    const musicBtn = document.getElementById("musicBtn");
+    musicBtn.addEventListener("click", () => {
+      if (!window.musicStarted) {
+        const iframe = document.createElement("iframe");
+        iframe.width = 0;
+        iframe.height = 0;
+        iframe.src =
+          "https://www.youtube.com/embed/HoXrZsXyYMw?autoplay=1&loop=1&playlist=HoXrZsXyYMw";
+        iframe.allow = "autoplay";
+        iframe.style.position = "absolute";
+        iframe.style.left = "-9999px";
+        document.body.appendChild(iframe);
+        window.musicStarted = true;
+        musicBtn.textContent = "🎵 Music Playing...";
+      }
+    });
+  </script>
+</body>
+</html>
