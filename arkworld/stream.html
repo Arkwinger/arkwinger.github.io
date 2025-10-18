@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Secret Room</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle at center, #0a0a0a 60%, #000 100%);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Noto Sans KR', sans-serif;
+      position: relative;
+    }
+
+    /* subtle moving fog effect */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('https://i.imgur.com/YLOnL9R.png') repeat;
+      opacity: 0.05;
+      animation: fog 60s linear infinite;
+    }
+
+    @keyframes fog {
+      0% { background-position: 0 0; }
+      100% { background-position: 2000px 0; }
+    }
+
+    iframe {
+      width: 70vw;
+      height: 60vh;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 35px rgba(255, 182, 193, 0.3);
+      opacity: 0;
+      transition: opacity 5s ease;
+      z-index: 2;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: 10%;
+      text-align: center;
+      font-size: 1.1rem;
+      opacity: 0;
+      text-shadow: 0 0 15px #ffb6c1;
+      animation: fadeIn 3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .whisper {
+      position: absolute;
+      bottom: 5%;
+      font-size: 0.9rem;
+      opacity: 0;
+      color: #ccc;
+      animation: appear 10s ease forwards;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes appear {
+      0% { opacity: 0; }
+      30% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+
+    .glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,182,193,0.15), transparent 70%);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      filter: blur(60px);
+      z-index: 0;
+      animation: pulse 10s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <iframe
+    id="stream"
+    src="https://player.twitch.tv/?channel=gyu_0227&parent=arkwinger.github.io"
+    allowfullscreen>
+  </iframe>
+
+  <div class="bubble" id="line1">...조용히 해.</div>
+  <div class="bubble" id="line2" style="animation-delay: 4s;">여긴 아무도 몰라야 해.</div>
+  <div class="bubble" id="line3" style="animation-delay: 8s;">아크가 알면... 이 방을 삭제할지도 몰라.</div>
+  <div class="bubble" id="line4" style="animation-delay: 12s;">...그래도 보여줄게. 네가 맞췄으니까.</div>
+  <div class="whisper" style="animation-delay: 16s;">(스트림이 천천히 켜진다...)</div>
+
+  <script>
+    // fade in stream after dialogue
+    setTimeout(() => {
+      document.getElementById("stream").style.opacity = "1";
+    }, 15000);
+  </script>
+</body>
+</html>
