@@ -7,7 +7,6 @@ Personal site hosted on **GitHub Pages** — a mix of experiments, language tool
 ### 🌙 Arkwinger’s World
 A Korean-anime-style interactive “happy place.”  
 Type the correct password in the hacker terminal to enter.  
-
 https://arkwinger.github.io/
 
 ---
