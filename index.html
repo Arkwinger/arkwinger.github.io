@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Arkwinger Terminal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arkwinger Access Terminal</title>
   <style>
     body {
-      background: black;
+      background-color: #000;
       color: #00ff88;
-      font-family: "Courier New", monospace;
-      padding: 40px;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      font-size: 1.1rem;
+      line-height: 1.5;
       overflow: hidden;
     }
-    #terminal {
-      white-space: pre-wrap;
-      line-height: 1.4;
-    }
+
     .cursor {
       display: inline-block;
       width: 10px;
       background: #00ff88;
-      animation: blink 1s infinite;
-      margin-left: 3px;
+      margin-left: 5px;
+      animation: blink 0.8s steps(2, start) infinite;
     }
-    @keyframes blink { 0%,50%{opacity:1;} 51%,100%{opacity:0;} }
+
+    @keyframes blink {
+      to { visibility: hidden; }
+    }
+
     input {
       background: transparent;
       border: none;
+      border-bottom: 1px solid #00ff88;
       color: #00ff88;
       font-family: inherit;
       font-size: 1rem;
       outline: none;
-      width: 250px;
+      width: 200px;
     }
+
     #overlay {
       position: fixed;
       inset: 0;
@@ -44,12 +50,11 @@
 </head>
 <body>
   <div id="terminal">
-    Initializing Arkwinger Access Node...  
-    [OK] System Integrity: Verified  
-    [OK] Quantum Session: Stable  
-    -------------------------------------------  
-    Access key required to enter Arkwinger’s World.  
-    <br><br>
+    Initializing Arkwinger Access Node...<br>
+    [OK] System Integrity: Verified<br>
+    [OK] Quantum Session: Stable<br>
+    -------------------------------------------<br>
+    Access key required to enter Arkwinger’s World.<br><br>
     Enter password: <input type="password" id="pass"><span class="cursor"></span>
   </div>
   <div id="overlay"></div>
@@ -60,14 +65,30 @@
 
     pass.addEventListener("keydown", e => {
       if (e.key === "Enter") {
-        if (pass.value.trim().toLowerCase() === "shiro") {
-          document.body.insertAdjacentHTML('beforeend', "<br>[ACCESS GRANTED] Welcome back, Arkwinger...");
+        const value = pass.value.trim().toLowerCase();
+
+        if (value === "shiro") {
+          document.body.insertAdjacentHTML(
+            'beforeend',
+            "<br>[ACCESS GRANTED] Welcome back, Arkwinger..."
+          );
+
+          // Fade transition before redirect
           setTimeout(() => {
             overlay.style.opacity = "1";
-            setTimeout(() => window.location.href = "./arkworld/home.html", 1200);
+            setTimeout(() => {
+              // Auto-detect repo path (works with or without /arkworld/)
+              const path = window.location.pathname.includes("/arkworld/")
+                ? "./home.html"
+                : "./arkworld/home.html";
+              window.location.href = path;
+            }, 1000);
           }, 1000);
         } else {
-          document.body.insertAdjacentHTML('beforeend', "<br>[DENIED] Invalid key.");
+          document.body.insertAdjacentHTML(
+            'beforeend',
+            "<br>[DENIED] Invalid key."
+          );
           pass.value = "";
         }
       }
