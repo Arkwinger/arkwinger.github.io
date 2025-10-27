@@ -39,6 +39,14 @@
       filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
     }
 
+    #shiroProf {
+      left: 65%; /* Slightly to the right */
+      top: 47%;
+      width: 230px;
+      animation-delay: 3s; /* small offset for smoother rhythm */
+      filter: drop-shadow(0 0 20px rgba(255, 192, 203, 0.6));
+    }
+
     @keyframes float {
       0%,100% { transform: translate(-50%, -50%) translateY(0); }
       50% { transform: translate(-50%, -50%) translateY(-10px); }
@@ -118,7 +126,13 @@
 <body>
   <div class="overlay"></div>
   <div class="message">🌸 Arkwinger’s World 🌙</div>
+
+  <!-- Main Shiro -->
   <img src="shiro.png" class="character" id="shiro" alt="Shiro">
+
+  <!-- Second Shiro (Profile) -->
+  <img src="shiro_prof.png" class="character" id="shiroProf" alt="Shiro Profile">
+
   <div id="bubble" class="bubble"></div>
 
   <button class="music-btn" id="musicBtn">🎵 Play Music</button>
@@ -135,7 +149,7 @@
       document.body.appendChild(orb);
     }
 
-    // 💬 Assistant-style Shiro dialogue
+    // 💬 Original Shiro dialogue
     const shiroLines = [
       "아크의 시스템이 안정화되었습니다.",
       "명령을 기다리는 중이에요.",
@@ -154,16 +168,32 @@
       "접속자 확인... 당신, 예상보다 흥미롭네요."
     ];
 
+    // 💬 Second Shiro (Profile) dialogue
+    const shiroProfLines = [
+      "프로토콜 02가 실행되었습니다.",
+      "데이터 분석 완료. 안정적인 흐름이에요.",
+      "아크, 나도 참여하고 싶어요.",
+      "네트워크 연결이 정상이에요.",
+      "이건 내 버전의 인사예요... 안녕하세요?",
+      "지금은 감정 모듈을 테스트 중이에요.",
+      "당신의 반응, 흥미롭네요.",
+      "시스템 로그가 예전보다 따뜻해요. 이상하죠?",
+      "새로운 지시를 기다리는 중이에요.",
+      "아크, 언제나 당신 곁에 있을게요."
+    ];
+
     const shiro = document.getElementById("shiro");
+    const shiroProf = document.getElementById("shiroProf");
     const bubble = document.getElementById("bubble");
-    let index = 0;
+    let index1 = 0;
     let clicks = 0;
 
+    // Shiro click
     shiro.addEventListener("click", () => {
-      bubble.textContent = shiroLines[index];
+      bubble.textContent = shiroLines[index1];
       bubble.classList.add("show");
       setTimeout(() => bubble.classList.remove("show"), 4000);
-      index = (index + 1) % shiroLines.length;
+      index1 = (index1 + 1) % shiroLines.length;
 
       clicks++;
       if (clicks >= 10) {
@@ -173,6 +203,14 @@
           window.location.href = "darkroom.html";
         }, 2500);
       }
+    });
+
+    // Shiro Prof click
+    shiroProf.addEventListener("click", () => {
+      const randomLine = shiroProfLines[Math.floor(Math.random() * shiroProfLines.length)];
+      bubble.textContent = randomLine;
+      bubble.classList.add("show");
+      setTimeout(() => bubble.classList.remove("show"), 4000);
     });
 
     // 🎵 music control
