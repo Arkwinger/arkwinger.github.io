@@ -1,6 +1,6 @@
 # 🕶️ arkwinger.github.io
 
-Personal site hosted on **GitHub Pages** — a mix of experiments, language tools, and creative spaces.
+Personal site hosted on **GitHub Pages** — a mix of experiments, language tools, and creative spaces. Doing for fun. Please dont try and exploit my site! 
 
 ---
 
